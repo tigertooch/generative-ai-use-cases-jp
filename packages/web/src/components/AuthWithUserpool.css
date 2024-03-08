@@ -6,7 +6,10 @@
     height: 400px !important;
     margin: 0 auto !important;
     border-color:#bab7b8 !important;
+    border-radius: 8px !important;
 }
+
+
 .amplify-input.amplify-field-group__control{
     border-radius: 4px !important;
 }
@@ -28,3 +31,10 @@
 .amplify-button.amplify-field-group__control.amplify-button--link.amplify-button--small{
     color: #0e0f0f !important;
 } 
+.black-bar {
+    height: 80px;
+    background-color: black;
+    width: 100%; /* 如果需要，使黑条充满整个容器宽度 */
+    margin: 0 auto ;
+    border-radius: 6px !important;
+  }

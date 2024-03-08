@@ -38,17 +38,21 @@ const AuthWithUserpool: React.FC = () => {
 
   return (
     // <ThemeProvider theme={myTheme}>
+      <>
+      <div className="black-bar"></div>
       <Authenticator
         hideSignUp={!selfSignUpEnabled}
         components={{
           Header: () => (
-            <div className="text-aws-font-color mb-5 mt-10 flex justify-center text-3xl">
+            <div className="text-aws-font-color mb-5 mt-10 flex justify-center text-3xl" style={{marginTop: '180px'}}>
+              <div ></div>
               <span style={{ fontSize: '24px' }}>Generative AI on</span><span style={{ marginLeft: '100px',fontSize: '24px' }}>Systems</span>
             </div>
           ),
         }}>
         <App />
       </Authenticator>
+      </>
    // </ThemeProvider>
   );
 };
