@@ -1,20 +1,21 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Location, useLocation } from 'react-router-dom';
 import Card from '../components/Card';
 import Button from '../components/Button';
 import Textarea from '../components/Textarea';
 import Markdown from '../components/Markdown';
 import ButtonCopy from '../components/ButtonCopy';
-import Select from '../components/Select';
 import useChat from '../hooks/useChat';
 import useTyping from '../hooks/useTyping';
 import { create } from 'zustand';
-import { GenerateTextPageQueryParams } from '../@types/navigate';
+import { generateTextPrompt } from '../prompts';
+import { GenerateTextPageLocationState } from '../@types/navigate';
+import { SelectField } from '@aws-amplify/ui-react';
 import { MODELS } from '../hooks/useModel';
-import { getPrompter } from '../prompts';
-import queryString from 'query-string';
 
 type StateType = {
+  modelId: string;
+  setModelId: (c: string) => void;
   information: string;
   setInformation: (s: string) => void;
   context: string;
@@ -26,12 +27,18 @@ type StateType = {
 
 const useGenerateTextPageState = create<StateType>((set) => {
   const INIT_STATE = {
+    modelId: '',
     information: '',
     context: '',
     text: '',
   };
   return {
     ...INIT_STATE,
+    setModelId: (s: string) => {
+      set(() => ({
+        modelId: s,
+      }));
+    },
     setInformation: (s: string) => {
       set(() => ({
         information: s,
@@ -55,6 +62,8 @@ const useGenerateTextPageState = create<StateType>((set) => {
 
 const GenerateTextPage: React.FC = () => {
   const {
+    modelId,
+    setModelId,
     information,
     setInformation,
     context,
@@ -63,55 +72,45 @@ const GenerateTextPage: React.FC = () => {
     setText,
     clear,
   } = useGenerateTextPageState();
-  const { pathname, search } = useLocation();
-  const {
-    getModelId,
-    setModelId,
-    loading,
-    messages,
-    postChat,
-    clear: clearChat,
-  } = useChat(pathname);
+  const { state, pathname } =
+    useLocation() as Location<GenerateTextPageLocationState>;
+  const { loading, messages, postChat, clear: clearChat } = useChat(pathname);
   const { setTypingTextInput, typingTextOutput } = useTyping(loading);
-  const { modelIds: availableModels } = MODELS;
-  const modelId = getModelId();
-  const prompter = useMemo(() => {
-    return getPrompter(modelId);
-  }, [modelId]);
+  const { modelIds: availableModels, textModels } = MODELS;
 
   const disabledExec = useMemo(() => {
     return information === '' || loading;
   }, [information, loading]);
 
   useEffect(() => {
-    const _modelId = !modelId ? availableModels[0] : modelId;
-    if (search !== '') {
-      const params = queryString.parse(search) as GenerateTextPageQueryParams;
-      setInformation(params.information ?? '');
-      setContext(params.context ?? '');
-
-      setModelId(
-        availableModels.includes(params.modelId ?? '')
-          ? params.modelId!
-          : _modelId
-      );
-    } else {
-      setModelId(_modelId);
+    if (state !== null) {
+      setInformation(state.information);
+      setContext(state.context);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setInformation, setContext, modelId, availableModels, search]);
+  }, [state, setInformation, setContext]);
 
   useEffect(() => {
     setTypingTextInput(text);
   }, [text, setTypingTextInput]);
 
-  const getGeneratedText = (information: string, context: string) => {
+  useEffect(() => {
+    if (!modelId) {
+      setModelId(availableModels[0]);
+    }
+  }, [modelId, availableModels, setModelId]);
+
+  const getGeneratedText = (
+    modelId: string,
+    information: string,
+    context: string
+  ) => {
     postChat(
-      prompter.generateTextPrompt({
+      generateTextPrompt.generatePrompt({
         information,
         context,
       }),
-      true
+      true,
+      textModels.find((m) => m.modelId === modelId)
     );
   };
 
@@ -121,16 +120,16 @@ const GenerateTextPage: React.FC = () => {
     const _lastMessage = messages[messages.length - 1];
     if (_lastMessage.role !== 'assistant') return;
     const _response = messages[messages.length - 1].content;
-    setText(_response.trim());
+    setText(_response.replace(/(<output>|<\/output>)/g, '').trim());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
   // 要約を実行
   const onClickExec = useCallback(() => {
     if (loading) return;
-    getGeneratedText(information, context);
+    getGeneratedText(modelId, information, context);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [information, context, loading]);
+  }, [modelId, information, context, loading]);
 
   // リセット
   const onClickClear = useCallback(() => {
@@ -146,14 +145,18 @@ const GenerateTextPage: React.FC = () => {
       </div>
       <div className="col-span-12 col-start-1 mx-2 lg:col-span-10 lg:col-start-2 xl:col-span-10 xl:col-start-2">
         <Card label="文章の元になる情報">
-          <div className="mb-2 flex w-full">
-            <Select
+          <div className="mb-4 flex w-full">
+            <SelectField
+              label="モデル"
+              labelHidden
               value={modelId}
-              onChange={setModelId}
-              options={availableModels.map((m) => {
-                return { value: m, label: m };
-              })}
-            />
+              onChange={(e) => setModelId(e.target.value)}>
+              {availableModels.map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </SelectField>
           </div>
 
           <Textarea

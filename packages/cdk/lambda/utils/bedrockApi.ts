@@ -8,7 +8,6 @@ import {
 import {
   ApiInterface,
   BedrockImageGenerationResponse,
-  BedrockResponse,
   GenerateImageParams,
   UnrecordedMessage,
 } from 'generative-ai-use-cases-jp';
@@ -24,11 +23,6 @@ const createBodyText = (
 ): string => {
   const modelConfig = BEDROCK_MODELS[model];
   return modelConfig.createBodyText(messages);
-};
-
-const extractOutputText = (model: string, body: BedrockResponse): string => {
-  const modelConfig = BEDROCK_MODELS[model];
-  return modelConfig.extractOutputText(body);
 };
 
 const createBodyImage = (
@@ -55,8 +49,7 @@ const bedrockApi: ApiInterface = {
       contentType: 'application/json',
     });
     const data = await client.send(command);
-    const body = JSON.parse(data.body.transformToString());
-    return extractOutputText(model.modelId, body);
+    return JSON.parse(data.body.transformToString()).completion;
   },
   invokeStream: async function* (model, messages) {
     try {
@@ -78,9 +71,8 @@ const bedrockApi: ApiInterface = {
         const body = JSON.parse(
           new TextDecoder('utf-8').decode(streamChunk.chunk?.bytes)
         );
-        const outputText = extractOutputText(model.modelId, body);
-        if (outputText) {
-          yield outputText;
+        if (body.completion) {
+          yield body.completion;
         }
         if (body.stop_reason) {
           break;

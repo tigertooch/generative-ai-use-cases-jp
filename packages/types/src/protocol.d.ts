@@ -62,9 +62,8 @@ export type PredictRequest = {
 export type PredictResponse = string;
 
 export type PredictTitleRequest = {
-  model: Model;
   chat: Chat;
-  prompt: string;
+  messages: UnrecordedMessage[];
 };
 
 export type PredictTitleResponse = string;

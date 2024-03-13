@@ -1,24 +1,7 @@
 import { Amplify, I18n } from 'aws-amplify';
 import { Authenticator, translations } from '@aws-amplify/ui-react';
-// import { createTheme, ThemeProvider } from '@aws-amplify/ui-react';
-import './AuthWithUserpool.css'; // 调整路径以匹配实际文件位置
+import './AuthWithUserpool.css'; // ����·����ƥ��ʵ���ļ�λ��
 import App from '../App.tsx';
-
-// 创建自定义主题
-// 创建自定义主题
-// const myTheme = createTheme({
-//   name: 'my-theme',
-//   tokens: {
-//     components: {
-//       button: {
-//         primary: {
-//           backgroundColor: 'black',
-//         },
-//       },
-//     },
-//   },
-// });
-
 
 const selfSignUpEnabled: boolean =
   import.meta.env.VITE_APP_SELF_SIGN_UP_ENABLED === 'true';

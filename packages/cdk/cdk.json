@@ -30,7 +30,7 @@
       "anthropic.claude-v2"
     ],
     "imageGenerationModelIds": [
-      "stability.stable-diffusion-xl-v1"
+      "stability.stable-diffusion-xl-v0"
     ],
     "endpointNames": [],
     "agentEnabled": false,

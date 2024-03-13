@@ -2,27 +2,33 @@ import React, { useCallback, useEffect } from 'react';
 import InputChatContent from '../components/InputChatContent';
 import { create } from 'zustand';
 import Alert from '../components/Alert';
-import useChat from '../hooks/useChat';
 import useRag from '../hooks/useRag';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, Location } from 'react-router-dom';
 import ChatMessage from '../components/ChatMessage';
-import Select from '../components/Select';
 import useScroll from '../hooks/useScroll';
 import { ReactComponent as BedrockIcon } from '../assets/bedrock.svg';
 import { ReactComponent as KendraIcon } from '../assets/kendra.svg';
 import { PiPlus } from 'react-icons/pi';
-import { RagPageQueryParams } from '../@types/navigate';
+import { RagPageLocationState } from '../@types/navigate';
+import { SelectField } from '@aws-amplify/ui-react';
 import { MODELS } from '../hooks/useModel';
-import queryString from 'query-string';
 
 type StateType = {
+  modelId: string;
+  setModelId: (c: string) => void;
   content: string;
   setContent: (c: string) => void;
 };
 
 const useRagPageState = create<StateType>((set) => {
   return {
+    modelId: '',
     content: '',
+    setModelId: (s: string) => {
+      set(() => ({
+        modelId: s,
+      }));
+    },
     setContent: (s: string) => {
       set(() => ({
         content: s,
@@ -32,34 +38,28 @@ const useRagPageState = create<StateType>((set) => {
 });
 
 const RagPage: React.FC = () => {
-  const { content, setContent } = useRagPageState();
-  const { pathname, search } = useLocation();
-  const { getModelId, setModelId } = useChat(pathname);
+  const { modelId, setModelId, content, setContent } = useRagPageState();
+  const { state, pathname } = useLocation() as Location<RagPageLocationState>;
   const { postMessage, clear, loading, messages, isEmpty } = useRag(pathname);
   const { scrollToBottom, scrollToTop } = useScroll();
-  const { modelIds: availableModels } = MODELS;
-  const modelId = getModelId();
+  const { modelIds: availableModels, textModels } = MODELS;
 
   useEffect(() => {
-    const _modelId = !modelId ? availableModels[0] : modelId;
-    if (search !== '') {
-      const params = queryString.parse(search) as RagPageQueryParams;
-      setContent(params.content ?? '');
-      setModelId(
-        availableModels.includes(params.modelId ?? '')
-          ? params.modelId!
-          : _modelId
-      );
-    } else {
-      setModelId(_modelId);
+    if (state !== null) {
+      setContent(state.content);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [availableModels, modelId, search, setContent]);
+  }, [state, setContent]);
+
+  useEffect(() => {
+    if (!modelId) {
+      setModelId(availableModels[0]);
+    }
+  }, [modelId, availableModels, setModelId]);
 
   const onSend = useCallback(() => {
-    postMessage(content);
+    postMessage(content, textModels.find((m) => m.modelId === modelId)!);
     setContent('');
-  }, [content, postMessage, setContent]);
+  }, [textModels, modelId, content, postMessage, setContent]);
 
   const onReset = useCallback(() => {
     clear();
@@ -83,13 +83,17 @@ const RagPage: React.FC = () => {
         </div>
 
         <div className="mt-2 flex w-full items-end justify-center lg:mt-0">
-          <Select
+          <SelectField
+            label="モデル"
+            labelHidden
             value={modelId}
-            onChange={setModelId}
-            options={availableModels.map((m) => {
-              return { value: m, label: m };
-            })}
-          />
+            onChange={(e) => setModelId(e.target.value)}>
+            {availableModels.map((m) => (
+              <option key={m} value={m}>
+                {m}
+              </option>
+            ))}
+          </SelectField>
         </div>
 
         {isEmpty && (
