@@ -33,98 +33,98 @@ const recognizeFileEnabled: boolean =
   import.meta.env.VITE_APP_RECOGNIZE_FILE_ENABLED === 'true';
 
 const items: ItemProps[] = [
-  {
-    label: 'ホーム',
-    to: '/',
-    icon: <PiHouse />,
-    display: 'usecase' as const,
-  },
-  {
-    label: '設定情報',
-    to: '/setting',
-    icon: <PiGear />,
-    display: 'none' as const,
-  },
+  // {
+  //   label: 'ホーム',
+  //   to: '/',
+  //   icon: <PiHouse />,
+  //   display: 'usecase' as const,
+  // },
+  // {
+  //   label: '設定情報',
+  //   to: '/setting',
+  //   icon: <PiGear />,
+  //   display: 'none' as const,
+  // },
   {
     label: 'チャット',
     to: '/chat',
     icon: <PiChatsCircle />,
     display: 'usecase' as const,
   },
-  ragEnabled
-    ? {
-        label: 'RAG チャット',
-        to: '/rag',
-        icon: <PiChatCircleText />,
-        display: 'usecase' as const,
-      }
-    : null,
-  agentEnabled
-    ? {
-        label: 'Agent チャット',
-        to: '/agent',
-        icon: <PiRobot />,
-        display: 'usecase' as const,
-      }
-    : null,
-  {
-    label: '文章生成',
-    to: '/generate',
-    icon: <PiPencil />,
-    display: 'usecase' as const,
-  },
-  {
-    label: '要約',
-    to: '/summarize',
-    icon: <PiNote />,
-    display: 'usecase' as const,
-  },
-  {
-    label: '校正',
-    to: '/editorial',
-    icon: <PiPenNib />,
-    display: 'usecase' as const,
-  },
-  {
-    label: '翻訳',
-    to: '/translate',
-    icon: <PiTranslate />,
-    display: 'usecase' as const,
-  },
-  {
-    label: 'Web コンテンツ抽出',
-    to: '/web-content',
-    icon: <PiGlobe />,
-    display: 'usecase' as const,
-  },
-  {
-    label: '画像生成',
-    to: '/image',
-    icon: <PiImages />,
-    display: 'usecase' as const,
-  },
-  {
-    label: '音声認識',
-    to: '/transcribe',
-    icon: <PiSpeakerHighBold />,
-    display: 'tool' as const,
-  },
-  recognizeFileEnabled
-    ? {
-        label: 'ファイルアップロード',
-        to: '/file',
-        icon: <PiUploadSimple />,
-        display: 'tool' as const,
-      }
-    : null,
-  ragEnabled
-    ? {
-        label: 'Kendra 検索',
-        to: '/kendra',
-        icon: <PiMagnifyingGlass />,
-        display: 'tool' as const,
-      }
-    : null,
+  // ragEnabled
+  //   ? {
+  //       label: 'RAG チャット',
+  //       to: '/rag',
+  //       icon: <PiChatCircleText />,
+  //       display: 'usecase' as const,
+  //     }
+  //   : null,
+  // agentEnabled
+  //   ? {
+  //       label: 'Agent チャット',
+  //       to: '/agent',
+  //       icon: <PiRobot />,
+  //       display: 'usecase' as const,
+  //     }
+  //   : null,
+  // {
+  //   label: '文章生成',
+  //   to: '/generate',
+  //   icon: <PiPencil />,
+  //   display: 'usecase' as const,
+  // },
+  // {
+  //   label: '要約',
+  //   to: '/summarize',
+  //   icon: <PiNote />,
+  //   display: 'usecase' as const,
+  // },
+  // {
+  //   label: '校正',
+  //   to: '/editorial',
+  //   icon: <PiPenNib />,
+  //   display: 'usecase' as const,
+  // },
+  // {
+  //   label: '翻訳',
+  //   to: '/translate',
+  //   icon: <PiTranslate />,
+  //   display: 'usecase' as const,
+  // },
+  // {
+  //   label: 'Web コンテンツ抽出',
+  //   to: '/web-content',
+  //   icon: <PiGlobe />,
+  //   display: 'usecase' as const,
+  // },
+  // {
+  //   label: '画像生成',
+  //   to: '/image',
+  //   icon: <PiImages />,
+  //   display: 'usecase' as const,
+  // },
+  // {
+  //   label: '音声認識',
+  //   to: '/transcribe',
+  //   icon: <PiSpeakerHighBold />,
+  //   display: 'tool' as const,
+  // },
+  // recognizeFileEnabled
+  //   ? {
+  //       label: 'ファイルアップロード',
+  //       to: '/file',
+  //       icon: <PiUploadSimple />,
+  //       display: 'tool' as const,
+  //     }
+  //   : null,
+  // ragEnabled
+  //   ? {
+  //       label: 'Kendra 検索',
+  //       to: '/kendra',
+  //       icon: <PiMagnifyingGlass />,
+  //       display: 'tool' as const,
+  //     }
+  //   : null,
 ].flatMap((i) => (i !== null ? [i] : []));
 
 // /chat/:chatId の形式から :chatId を返す
