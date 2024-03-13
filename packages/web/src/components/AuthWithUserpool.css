@@ -1,3 +1,13 @@
+[data-amplify-authenticator]::before {
+    content: '';
+    display: block;
+    height: 80px;
+    background-color: black;
+    width: 100%; 
+    margin: 0 auto ;
+    border-radius: 6px !important;
+  }
+
 [data-amplify-container]{
     width:700px !important;
 }
@@ -34,7 +44,7 @@
 .black-bar {
     height: 80px;
     background-color: black;
-    width: 100%; /* 如果需要，使黑条充满整个容器宽度 */
+    /* width: 100%;  */
     margin: 0 auto ;
     border-radius: 6px !important;
   }

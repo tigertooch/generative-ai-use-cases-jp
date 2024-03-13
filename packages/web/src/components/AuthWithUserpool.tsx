@@ -1,6 +1,6 @@
 import { Amplify, I18n } from 'aws-amplify';
 import { Authenticator, translations } from '@aws-amplify/ui-react';
-import './AuthWithUserpool.css'; // 调整路径以匹配实际文件位置
+import './AuthWithUserpool.css'; 
 import App from '../App.tsx';
 
 const selfSignUpEnabled: boolean =
@@ -22,14 +22,14 @@ const AuthWithUserpool: React.FC = () => {
   return (
     // <ThemeProvider theme={myTheme}>
       <>
-      <div className="black-bar"></div>
       <Authenticator
         hideSignUp={!selfSignUpEnabled}
         components={{
           Header: () => (
-            <div className="text-aws-font-color mb-5 mt-10 flex justify-center text-3xl" style={{marginTop: '180px'}}>
-              <div ></div>
+            <div>
+              <div className="text-aws-font-color mb-5 mt-10 flex justify-center text-3xl" style={{marginTop: '180px'}}>
               <span style={{ fontSize: '24px' }}>Generative AI on</span><span style={{ marginLeft: '100px',fontSize: '24px' }}>Systems</span>
+              </div>
             </div>
           ),
         }}>
