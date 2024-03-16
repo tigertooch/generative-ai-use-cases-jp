@@ -29,8 +29,6 @@ export const SuggestionPanel: React.FC<Props>= (props) => {
     e.preventDefault();
   };
 
-
-
   const navigate = useNavigate();
   const handlePromptAddContent = useCallback((sugguestionItem:SugguestionItem) => {
     navigate('/chat', {
