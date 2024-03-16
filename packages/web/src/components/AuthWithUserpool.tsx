@@ -2,6 +2,7 @@ import { Amplify, I18n } from 'aws-amplify';
 import { Authenticator, translations } from '@aws-amplify/ui-react';
 import './AuthWithUserpool.css'; 
 import App from '../App.tsx';
+import { AppStateProvider } from "../state/AppProvider";
 
 const selfSignUpEnabled: boolean =
   import.meta.env.VITE_APP_SELF_SIGN_UP_ENABLED === 'true';
@@ -33,7 +34,10 @@ const AuthWithUserpool: React.FC = () => {
             </div>
           ),
         }}>
-        <App />
+        <AppStateProvider>
+          <App />
+        </AppStateProvider>
+        
       </Authenticator>
       </>
    // </ThemeProvider>

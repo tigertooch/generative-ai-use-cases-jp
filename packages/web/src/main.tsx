@@ -8,7 +8,7 @@ import {
   createBrowserRouter,
   RouteObject,
 } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
+// import LandingPage from './pages/LandingPage';
 import Setting from './pages/Setting';
 import ChatPage from './pages/ChatPage';
 import SharedChatPage from './pages/SharedChatPage';
@@ -35,7 +35,7 @@ const recognizeFileEnabled: boolean =
 const routes: RouteObject[] = [
   {
     path: '/',
-    element: <LandingPage />,
+    element: <ChatPage />,
   },
   {
     path: '/setting',

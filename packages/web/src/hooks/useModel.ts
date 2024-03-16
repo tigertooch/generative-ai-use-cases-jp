@@ -57,3 +57,19 @@ export const MODELS = {
   imageGenModels: imageGenModels,
   agentModels: agentModels,
 };
+
+
+export interface ListSuggestionItems {
+  onAddContent:React.MouseEvent
+  sugguestionItems: SugguestionItem[];
+}
+export interface SugguestionItem {
+  id: number;
+  title: string;
+  content: string;
+}
+export interface AppState {
+  isSuggestionOpen: boolean;
+  isNewSuggestionOpen:boolean;
+  isChatHistoryOpen: boolean;
+}

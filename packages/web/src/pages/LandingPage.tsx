@@ -247,9 +247,9 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="pb-24">
-      <div className="bg-aws-squid-ink flex flex-col items-center justify-center px-3 py-5 text-xl font-semibold text-white lg:flex-row">
-        <AwsIcon className="mr-5 size-20" />
-        生成 AI を体験してみましょう。
+      <div className="bg-aws-squid-ink flex flex-col items-center justify-center px-3 py-5 text-xl font-semibold text-white lg:flex-row top-0">
+        {/* <AwsIcon className="mr-5 size-20" /> */}
+        {/* 生成 AI を体験してみましょう。 */}
       </div>
 
       <div className="mx-3 mb-6 mt-5 flex flex-col items-center justify-center text-xs lg:flex-row">
@@ -270,7 +270,7 @@ const LandingPage: React.FC = () => {
           icon={<PiChatsCircle />}
           description="LLM とチャット形式で対話することができます。細かいユースケースや新しいユースケースに迅速に対応することができます。プロンプトエンジニアリングの検証用環境としても有効です。"
         />
-        {ragEnabled && (
+        {/* {ragEnabled && (
           <CardDemo
             label="RAG チャット"
             onClickDemo={demoRag}
@@ -321,14 +321,14 @@ const LandingPage: React.FC = () => {
           onClickDemo={demoGenerateImage}
           icon={<PiImages />}
           description="画像生成 AI は、テキストや画像を元に新しい画像を生成できます。アイデアを即座に可視化することができ、デザイン作業などの効率化を期待できます。こちらの機能では、プロンプトの作成を LLM に支援してもらうことができます。"
-        />
+        /> */}
       </div>
 
       <h1 className="mb-6 mt-12 flex justify-center text-2xl font-bold">
         ユースケース連携
       </h1>
 
-      <div className="mx-20 grid gap-x-20 gap-y-5 md:grid-cols-1 xl:grid-cols-2">
+      {/* <div className="mx-20 grid gap-x-20 gap-y-5 md:grid-cols-1 xl:grid-cols-2">
         <CardDemo
           label="ブログ記事作成"
           onClickDemo={demoBlog}
@@ -341,7 +341,7 @@ const LandingPage: React.FC = () => {
           icon={<PiNotebook />}
           description="複数のユースケースを組み合わせて、会議の録音データから議事録を自動作成します。録音データの文字起こし、文字起こし結果の整形、議事録作成を人的コストをかけずに行うことが可能です。"
         />
-      </div>
+      </div> */}
     </div>
   );
 };

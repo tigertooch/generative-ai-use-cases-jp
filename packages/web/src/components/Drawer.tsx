@@ -21,6 +21,7 @@ export type ItemProps = BaseProps & {
   to: string;
   icon: JSX.Element;
   display: 'usecase' | 'tool' | 'none';
+  name:string;
 };
 
 const Item: React.FC<ItemProps> = (props) => {
@@ -123,7 +124,7 @@ const Drawer: React.FC<Props> = (props) => {
   return (
     <>
       <nav
-        className={`bg-aws-squid-ink flex h-screen w-64 flex-col justify-between text-sm text-white  print:hidden`}>
+        className={`custom-gray bg-aws-squid-ink flex h-screen w-64 flex-col justify-between text-sm text-white  print:hidden`} >
         <div className="text-aws-smile mx-3 my-2 text-xs">
           ユースケース <span className="text-gray-400">(生成AI)</span>
         </div>
@@ -135,6 +136,7 @@ const Drawer: React.FC<Props> = (props) => {
               icon={item.icon}
               to={item.to}
               display={item.display}
+              name={item.name}
             />
           ))}
         </div>
@@ -153,6 +155,7 @@ const Drawer: React.FC<Props> = (props) => {
                     icon={item.icon}
                     to={item.to}
                     display={item.display}
+                    name={item.name}
                   />
                 ))}
               </div>
@@ -160,7 +163,7 @@ const Drawer: React.FC<Props> = (props) => {
             <div className="border-b" />
           </>
         )}
-        <ExpandableMenu title="会話履歴" className="mx-3 my-2 text-xs">
+        {/* <ExpandableMenu title="会話履歴" className="mx-3 my-2 text-xs">
           <div className="relative mb-2 ml-2 mr-1 w-full pl-1.5 pr-7 pt-1">
             <input
               className="bg-aws-squid-ink h-7 w-full rounded-full border border-white pl-8 text-sm text-white focus:border-white focus:ring-0"
@@ -176,8 +179,8 @@ const Drawer: React.FC<Props> = (props) => {
           <div className="scrollbar-thin scrollbar-thumb-white ml-2 mr-1 h-full overflow-y-auto">
             <ChatList className="mr-1" searchWords={searchWords} />
           </div>
-        </ExpandableMenu>
-        <div className="border-b" />
+        </ExpandableMenu> */}
+        {/* <div className="border-b" />
         <ExpandableMenu
           title="リンク"
           defaultOpened={false}
@@ -199,7 +202,7 @@ const Drawer: React.FC<Props> = (props) => {
               label="Claude Prompt Engineering"
             />
           </div>
-        </ExpandableMenu>
+        </ExpandableMenu> */}
         <div className="flex items-center justify-between border-t border-gray-400 px-3 py-2">
           <Link
             to="/setting"

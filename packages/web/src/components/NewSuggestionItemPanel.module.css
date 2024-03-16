@@ -1,0 +1,22 @@
+
+.divClass {
+    display: flex;
+    flex-direction: column; /* 使子元素上下排列 */
+    gap: 20px; /* 定义元素之间的间距 */
+    padding: 20px; /* 内边距 */
+    background-color: #f0f0f0; /* 背景色 */
+    border-radius: 8px; /* 圆角 */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* 阴影效果 */
+  }
+
+
+@media (min-width: 480px){
+  .main-111 {
+    width: auto;
+    max-width: 480px;
+    min-width: 288px;
+  }
+}   
+.ms-Button.ms-Button--primary.root-130{
+  background-color: #1d138f;
+}

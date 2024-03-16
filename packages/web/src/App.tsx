@@ -1,22 +1,22 @@
-import React, { useMemo } from 'react';
+import React, { useMemo ,useState,useContext,useEffect} from 'react';
 import { useLocation } from 'react-router-dom';
 import {
   PiList,
   PiHouse,
-  PiChatCircleText,
-  PiPencil,
-  PiNote,
+  // PiChatCircleText,
+  // PiPencil,
+  // PiNote,
   PiChatsCircle,
-  PiPenNib,
-  PiMagnifyingGlass,
-  PiTranslate,
-  PiImages,
-  PiSpeakerHighBold,
-  PiGear,
-  PiGlobe,
+  // PiPenNib,
+  // PiMagnifyingGlass,
+  // PiTranslate,
+  // PiImages,
+  // PiSpeakerHighBold,
+  // PiGear,
+  // PiGlobe,
   PiX,
-  PiRobot,
-  PiUploadSimple,
+  // PiRobot,
+  // PiUploadSimple,
 } from 'react-icons/pi';
 import { Outlet } from 'react-router-dom';
 import Drawer, { ItemProps } from './components/Drawer';
@@ -26,18 +26,22 @@ import useDrawer from './hooks/useDrawer';
 import useConversation from './hooks/useConversation';
 import PopupInterUseCasesDemo from './components/PopupInterUseCasesDemo';
 import useInterUseCases from './hooks/useInterUseCases';
-
-const ragEnabled: boolean = import.meta.env.VITE_APP_RAG_ENABLED === 'true';
-const agentEnabled: boolean = import.meta.env.VITE_APP_AGENT_ENABLED === 'true';
-const recognizeFileEnabled: boolean =
+import {SuggestionPanel} from './components/SuggestionPanel';
+import {NewSuggestionItemPanel} from './components/NewSuggestionItemPanel';
+import {AppStateContext } from "./state/AppProvider";
+import {SugguestionItem } from './hooks/useModel';
+// const ragEnabled: boolean = import.meta.env.VITE_APP_RAG_ENABLED === 'true';
+// const agentEnabled: boolean = import.meta.env.VITE_APP_AGENT_ENABLED === 'true';
+// const recognizeFileEnabled: boolean =
   import.meta.env.VITE_APP_RECOGNIZE_FILE_ENABLED === 'true';
-
+ 
 const items: ItemProps[] = [
   // {
   //   label: 'ホーム',
   //   to: '/',
   //   icon: <PiHouse />,
   //   display: 'usecase' as const,
+  //   name:'home',
   // },
   // {
   //   label: '設定情報',
@@ -50,6 +54,7 @@ const items: ItemProps[] = [
     to: '/chat',
     icon: <PiChatsCircle />,
     display: 'usecase' as const,
+    name:'chat',
   },
   // ragEnabled
   //   ? {
@@ -152,6 +157,31 @@ const App: React.FC = () => {
     }
   }, [pathname, getConversationTitle]);
 
+
+  const appStateContext = useContext(AppStateContext)
+   // 处理点击事件的函数
+  //  const handleItemClick = (item) => {
+  //   // 假设 item 有一个属性可以用来判断是否为聊天页面，比如 id 或 name
+  //   if (item.name === 'chat') {
+  //     setIsOpenChat(true);
+  //   } else {
+  //     setIsOpenChat(false);
+  //   }
+  // };
+  useEffect(() => {
+    const messages = JSON.parse(localStorage.getItem("newSugguestionItems") || '[]');
+    setSugguestionItems(messages);
+  }, []);
+  
+
+  const [sugguestionItems, setSugguestionItems] = useState<SugguestionItem[]>([]);
+
+  const onSave = (sugguestionItem: SugguestionItem) => {
+    const newSugguestionItems = [...sugguestionItems, sugguestionItem];
+    setSugguestionItems(newSugguestionItems);
+    localStorage.setItem('newSugguestionItems', JSON.stringify(newSugguestionItems));
+  };
+
   return (
     <div className="screen:w-screen screen:h-screen overflow-x-hidden">
       <main className="flex-1">
@@ -165,20 +195,17 @@ const App: React.FC = () => {
               <PiList />
             </button>
           </div>
-
           {label}
-
           {/* label を真ん中にするためのダミーのブロック */}
           <div className="w-10" />
         </header>
 
         <div
-          className={`fixed -left-64 top-0 z-50 transition-all lg:left-0 lg:z-0 ${
-            isOpenDrawer ? 'left-0' : '-left-64'
-          }`}>
+          className={`fixed -left-64 top-0 z-50 transition-all lg:left-0 lg:z-0 ${isOpenDrawer ? 'left-0' : '-left-64'}`}>
           <Drawer items={items} />
         </div>
-
+        <SuggestionPanel sugguestionItems={sugguestionItems}/>
+        {appStateContext?.state.isNewSuggestionOpen && <NewSuggestionItemPanel onSave={onSave}/>}
         <div
           id="smallDrawerFiller"
           className={`${isOpenDrawer ? 'visible' : 'invisible'} lg:invisible`}>
@@ -191,7 +218,7 @@ const App: React.FC = () => {
             <PiX />
           </ButtonIcon>
         </div>
-        <div className="text-aws-font-color lg:ml-64" id="main">
+        <div className="text-aws-font-color lg:ml-64 lg:mr-64" id="main">
           {/* ユースケース間連携時に表示 */}
           {isShow && <PopupInterUseCasesDemo />}
           <Outlet />
