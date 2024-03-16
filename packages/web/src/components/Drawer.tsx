@@ -125,8 +125,11 @@ const Drawer: React.FC<Props> = (props) => {
     <>
       <nav
         className={`custom-gray bg-aws-squid-ink flex h-screen w-64 flex-col justify-between text-sm text-white  print:hidden`} >
-        <div className="text-aws-smile mx-3 my-2 text-xs">
-          ユースケース <span className="text-gray-400">(生成AI)</span>
+        <div className="text-aws-test-col mx-3 my-2 text-xs">
+          ユースケース 
+          <span className="text-gray-400">
+            {/* (生成AI) */}
+          </span>
         </div>
         <div className="scrollbar-thin scrollbar-thumb-white ml-2 mr-1 h-full overflow-y-auto">
           {usecases.map((item, idx) => (

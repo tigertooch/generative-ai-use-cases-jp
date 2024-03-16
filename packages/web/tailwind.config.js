@@ -15,9 +15,11 @@ export default {
         'aws-anchor': '#003181',
         'aws-sky': '#2074d5',
         'aws-rind': '#FBD8BF',
-        'aws-smile': '#ff9900',
+        'aws-smile': '#3f4c56',
         'aws-font-color': '#232F3E',
         'aws-ml': '#01A88D',
+        'aws-backgroud':'#3f4c56',
+        'aws-test-col':'white',
       },
       screens: {
         print: { raw: 'print' },
