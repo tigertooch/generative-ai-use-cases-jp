@@ -199,7 +199,7 @@ const ChatPage: React.FC = () => {
           {title}
         </div>
 
-        {/* <div className="mt-2 flex w-full items-end justify-center lg:mt-0">
+        <div className="mt-2 flex w-full items-end justify-center lg:mt-0">
           <SelectField
             label="モデル"
             labelHidden
@@ -211,15 +211,15 @@ const ChatPage: React.FC = () => {
               </option>
             ))}
           </SelectField>
-        </div> */}
+        </div>
         
         {((isEmpty && !loadingMessages) || loadingMessages) && (
           <div className="relative flex h-[calc(100vh-13rem)] flex-col items-center justify-center">
-            {/* <BedrockIcon
+            <BedrockIcon
               className={`fill-gray-400 ${
                 loadingMessages ? 'animate-pulse' : ''
               }`}
-            /> */}
+            />
           </div>
         )}
 

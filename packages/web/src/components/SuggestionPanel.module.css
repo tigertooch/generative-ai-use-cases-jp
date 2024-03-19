@@ -1,80 +1,10 @@
 /* src/components/Suggestion02/Suggestion02.module.css */
-  .suggestionContainer {
-    background-color: #d1d5db; 
-    /* 黑色背景 */
-    color: rgb(8, 6, 6); 
-    /* 白色文本 */
-    padding-top: 20px; 
-    /* 内边距 */
-    /* flex-direction: column; */
-     /* 垂直堆叠链接 */
-    height: 100%;
-     /* 高度为视口高度减去100px */
-    /* max-height: calc(100vh - 100px); */
-    min-width: 256px; 
-    /* 最小宽度为200px */
-    /* width: 10%;  */
-    /* 宽度为视口宽度的10% */
-    /* border-radius: 8px;  */
-    /* 边框圆角 */
-    position: fixed; 
-    right: 0; 
-    /* 右对齐 */
-    /* z-index: 1000;  */
-    /* margin-left: auto;  */
-    /* 自动左边距，推到右侧 */
-    /* border-color: transparent; */
-  }
   @media (max-width: 1024px) {
     .suggestionContainer {
         display: none; 
     }
   }
-  .listItem {
-    /* margin-bottom: 10px;  */
-    /* 添加间距 */
-    color: black;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
-    /* 轻微的阴影效果 */
-    border-color: transparent;
-  }
-  .addButtonItem{
-    background-color: #d1d5db;
-    color: #292c32;
-    border-radius: 5px;
-    text-align: center;
-    height: 30px;
-    width: 100%;
-    border: 0.3px solid #b4b0b0;
-    margin-top: 20px;
-  }
-  .addButtonItem:hover {
-    transition: background-color 200ms, color 200ms; 
-    background-color: rgba(52, 53, 65, 0.9); 
-    /* 悬浮时的背景色 */
-    color: white; 
-    /* 悬浮时的文字颜色 */
-  }
-  .relativebutton {
-    display: flex; 
-    transition: background-color 200ms, color 200ms; 
-    /* 颜色和背景颜色变化的过渡效果 */
-    background-color: #f0f0f0;
-  }
-  /* SuggestionStyles.module.css */
-  .relativebutton:hover .showButton,
-  .relativebutton:hover .actionPrompt {
-    transition: background-color 200ms, color 200ms; 
-    background-color: rgba(52, 53, 65, 0.9); 
-    /* 悬浮时的背景色 */
-    color: white; 
-    /* 悬浮时的文字颜色 */
-  }
-  .relativebutton:hover .addButton {
-    transition: background-color 200ms, color 200ms; 
-    color: white;
-     /* 悬浮时的文字颜色 */
-  }
+  
   .showButton {
     display: flex; 
     /* flex布局 */
@@ -142,8 +72,6 @@
     word-break: break-all; 
     /* 文字过长时，允许在任意字符间断行 */
     text-align: left; 
-    /* 文字左对齐 */
-    font-size: 12.5px;
      /* 字体大小 */
     line-height: 1rem; 
     /* 行高 */

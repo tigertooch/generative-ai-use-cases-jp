@@ -15,6 +15,7 @@ import {
 import { ReactComponent as BedrockIcon } from '../assets/bedrock.svg';
 import ExpandableMenu from './ExpandableMenu';
 import ChatList from './ChatList';
+import Button from './Button';
 
 export type ItemProps = BaseProps & {
   label: string;
@@ -124,12 +125,16 @@ const Drawer: React.FC<Props> = (props) => {
   return (
     <>
       <nav
-        className={`custom-gray bg-aws-squid-ink flex h-screen w-64 flex-col justify-between text-sm text-white  print:hidden`} >
-        <div className="text-aws-test-col mx-3 my-2 text-xs">
+        className={`custom-gray bg-aws-squid-ink border-r flex h-screen w-64 flex-col justify-between text-sm text-black  print:hidden`} >
+        {/* <div className="text-gray-400 mx-3 my-2 text-xs">
           ユースケース 
-          <span className="text-gray-400">
-            {/* (生成AI) */}
-          </span>
+        </div> */}
+        <div className='flex justify-center p-2'>
+          <Button className="w-11/12" onClick={() => console.log(1)}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="fill-current w-5 h-5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>&nbsp;New Chat
+          </Button>
         </div>
         <div className="scrollbar-thin scrollbar-thumb-white ml-2 mr-1 h-full overflow-y-auto">
           {usecases.map((item, idx) => (
@@ -166,7 +171,7 @@ const Drawer: React.FC<Props> = (props) => {
             <div className="border-b" />
           </>
         )}
-        {/* <ExpandableMenu title="会話履歴" className="mx-3 my-2 text-xs">
+        <ExpandableMenu title="会話履歴" className="mx-3 my-2 text-xs">
           <div className="relative mb-2 ml-2 mr-1 w-full pl-1.5 pr-7 pt-1">
             <input
               className="bg-aws-squid-ink h-7 w-full rounded-full border border-white pl-8 text-sm text-white focus:border-white focus:ring-0"
@@ -182,7 +187,7 @@ const Drawer: React.FC<Props> = (props) => {
           <div className="scrollbar-thin scrollbar-thumb-white ml-2 mr-1 h-full overflow-y-auto">
             <ChatList className="mr-1" searchWords={searchWords} />
           </div>
-        </ExpandableMenu> */}
+        </ExpandableMenu>
         {/* <div className="border-b" />
         <ExpandableMenu
           title="リンク"
