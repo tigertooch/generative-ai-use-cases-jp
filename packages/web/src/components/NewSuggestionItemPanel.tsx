@@ -64,13 +64,13 @@ export const NewSuggestionItemPanel: React.FunctionComponent<NewSuggestionItemPa
               rows={10}
               onChange={(e) => setContent(e.target.value)} />
             
-            {/* <RadioGroupField
+            <RadioGroupField
               value={use}
               onChange={ (e) => setUse(e.target.value) }
-              legend="Row" name="row" direction="row">
+              label name="row" direction="row">
               <Radio value="1">個人利用</Radio>
               <Radio value="0">共通利用</Radio>
-            </RadioGroupField> */}
+            </RadioGroupField>
         </div>
           <div
             className={"w-full flex justify-between"}>
