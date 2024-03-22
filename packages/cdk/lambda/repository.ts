@@ -2,6 +2,8 @@ import {
   Chat,
   RecordedMessage,
   ToBeRecordedMessage,
+  RecordedPrompt,
+  ToBeRecordedPrompt,
   ShareId,
   UserIdAndChatId,
 } from 'generative-ai-use-cases-jp';
@@ -16,6 +18,7 @@ import {
   TransactWriteCommand,
   UpdateCommand,
 } from '@aws-sdk/lib-dynamodb';
+import { v4 as uuidv4 } from 'uuid';
 
 const TABLE_NAME: string = process.env.TABLE_NAME!;
 const dynamoDb = new DynamoDBClient({});
@@ -151,6 +154,82 @@ export const batchCreateMessages = async (
   );
 
   return items;
+};
+
+export const batchCreatePrompts = async (
+  prompts: ToBeRecordedPrompt[],
+  _userId: string,
+): Promise<RecordedPrompt[]> => {
+  const userId = `user#${_userId}`;
+  const createdDate = Date.now();
+  const items: RecordedPrompt[] = prompts.map(
+    (p: ToBeRecordedPrompt, i: number) => {
+      return {
+        id: uuidv4(),
+        createdDate: `${createdDate + i}#0`,
+        title: p.title,
+        content: p.content,
+        type: p.type,
+        updatedDate:`${createdDate + i}#0`,
+        userId:userId,
+      };
+    }
+  );
+  await dynamoDbDocument.send(
+    new BatchWriteCommand({
+      RequestItems: {
+        ['Prompt']: items.map((m) => {
+          return {
+            PutRequest: {
+              Item: m,
+            },
+          };
+        }),
+      },
+    })
+  );
+  return items;
+};
+
+export const updatePrompt = async (
+  id: string,
+  createdDate: string,
+  content: string
+): Promise<RecordedPrompt> => {
+  const res = await dynamoDbDocument.send(
+    new UpdateCommand({
+      TableName: 'Prompt',
+      Key: {
+        id: id,
+        createdDate,
+      },
+      UpdateExpression: 'set content = :content',
+      ExpressionAttributeValues: {
+        ':content': content,
+      },
+      ReturnValues: 'ALL_NEW',
+    })
+  );
+  return res.Attributes as RecordedPrompt;
+};
+
+export const listPrompts = async (
+  _userId: string
+): Promise<RecordedPrompt[]> => {
+  const userId =  `user#${_userId}`;
+  const res = await dynamoDbDocument.send(
+    new QueryCommand({
+      TableName: 'Prompt',
+      KeyConditionExpression: '#userId = :userId',
+      ExpressionAttributeNames: {
+        '#userId': 'userId',
+      },
+      ExpressionAttributeValues: {
+        ':userId': userId,
+      },
+    })
+  );
+  return res.Items as RecordedPrompt[];
 };
 
 export const setChatTitle = async (

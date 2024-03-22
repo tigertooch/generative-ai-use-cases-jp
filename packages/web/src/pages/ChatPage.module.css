@@ -1,0 +1,22 @@
+.fixedBottomContainer {
+  position: fixed; /* 对应 fixed */
+  bottom: 0; /* 对应 bottom-0 */
+  z-index: 0; /* 对应 z-0 */
+  display: flex; /* 对应 flex */
+  flex-direction: column; /* 对应 flex-col */
+  align-items: center; /* 对应 items-center */
+  justify-content: center; /* 对应 justify-center */
+  width: 100%;
+}
+
+@media print {
+  .fixedBottomContainer {
+    display: none; /* 对应 print:hidden */
+  }
+}
+
+@media (min-width: 1024px) { /* 默认情况下，lg 断点是 1024px，这可能因配置而异 */
+  .fixedBottomContainer {
+    padding-right: 32rem; /* 对应 lg:pr-64，1rem 通常等于 16px，所以 16rem 是 256px */
+  }
+}

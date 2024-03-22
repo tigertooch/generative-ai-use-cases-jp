@@ -1,0 +1,156 @@
+/* src/components/Suggestion02/Suggestion02.module.css */
+  @media (max-width: 1024px) {
+    .suggestionContainer {
+        display: none; 
+    }
+  }
+  
+  .showButton {
+    display: flex; 
+    /* flex布局 */
+    width: 100%; 
+    /* 完整宽度 */
+    margin-left: 1.5px;
+    cursor: pointer; 
+    /* 鼠标悬停时显示指针 */
+    align-items: center; 
+    /* 垂直居中子元素 */
+    gap: 4px; 
+    /* 子元素之间的间隙 */
+    padding: 4px; 
+    /* 内边距 */
+    font-size: 0.875rem;
+     /* 文字大小，假设sm代表小号字体 */
+    background-color: transparent;
+    border-color: transparent;
+  }
+  .actionPrompt {
+    right: 1.4rem; 
+    /* right-1 通常意味着右侧间距，这里假设为0.25rem */
+    z-index: 10;
+    color: black;
+    display: flex;
+    /* 确保在其他内容之上 */
+    z-index: 1000; 
+    background-color: transparent;
+    border-color: transparent;
+  }
+  .addButton {
+    background-color: transparent;
+    padding: 10px;
+    border: none;
+    margin: 5px 0; 
+    /* 顶部和底部间距 */
+    border-color: transparent;
+    display: flex;
+    width: 100%;
+    cursor: pointer;
+    align-items: center;
+    gap: 12px;
+     /* gap-3 的具体值取决于您的设计系统，这里假设每个 gap 单位为4px */
+    padding: 0px; 
+    /* p-2 的具体值取决于您的设计系统，这里假设每个 padding 单位为4px */
+    font-size: 0.875rem;
+     /* text-sm 假设为小号字体 */
+    background-color: transparent;
+    border-color: transparent;
+  }
+  
+  .namePrompt {
+    position: relative; 
+    /* 相对定位 */
+    max-height: 1.25rem; 
+    /* 最大高度 */
+    flex: 1; 
+    /* flex项占据所有可用空间 */
+    overflow: hidden; 
+    /* 隐藏溢出的内容 */
+    text-overflow: ellipsis;
+     /* 溢出文本显示省略号 */
+    white-space: nowrap; 
+    /* 文本不换行 */
+    word-break: break-all; 
+    /* 文字过长时，允许在任意字符间断行 */
+    text-align: left; 
+     /* 字体大小 */
+    line-height: 1rem; 
+    /* 行高 */
+    padding-right: 4rem; 
+    /* 右内边距 */
+    border-color: transparent;
+  }
+  .promptContent {
+    gap: 0.5rem; 
+    /* gap-2，根据实际设计系统调整间隙大小，这里假设2等于0.5rem */
+    border-color: transparent;
+
+  }
+  .relativeContent {
+    position: relative; 
+    /* 设置元素相对定位 */
+    display: flex;
+     /* 使用flex布局 */
+    align-items: center; 
+    /* 垂直居中flex项 */
+    overflow: hidden; 
+    /* 隐藏溢出的内容 */
+    border-color: transparent;
+  }
+  .atextarea {
+    max-height: 5rem; 
+    /* 假设 max-h-20 代表的最大高度是 5rem，这取决于您的设计系统 */
+    text-align: left; 
+    /* 文本左对齐 */
+    font-size: 12.5px; 
+    /* 字体大小设置为 12.5px */
+    overflow: auto; 
+    /* 当内容超出设定的最大高度时，允许滚动 */
+    width: 230px;
+  }
+  .bdiv {
+    position: absolute;
+    right: 0.25rem; 
+    /* 假设 right-1 为 0.25rem */
+    bottom: 0.25rem; 
+    /* 假设 bottom-1 为 0.25rem，注意这里和bottom-0重复了，所以我们采用0.25rem作为示例 */
+    border-radius: 9999px; 
+    /* rounded-full 通常意味着完全圆形 */
+    border: 1px solid; 
+    /* 默认边框样式，需要根据实际设计调整 */
+    background-color: #D1D5DB; 
+    /* bg-gray-400 的颜色值 */
+    color: white; 
+    /* 文字颜色 */
+    z-index: 10; 
+    /* 层叠顺序 */
+    display: flex; 
+    /* 使用 flex 布局 */
+    border-color: transparent;
+  }
+  .bdiv:hover {
+    background-color: #4B5563; 
+    /* hover:bg-gray-600 的颜色值 */
+    color: white; 
+    /* hover:text-white 悬浮时文字颜色保持不变 */
+  }
+  .bbutton {
+    min-width: 20px; /* 设置最小宽度为20px */
+    padding: 4px;
+    background-color: #ffffff0a;
+    border-color: transparent;
+  }
+  .tablerIcon {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    border-color: transparent;
+  }
+  .tablerIconCaretDown {
+    margin-bottom: 0px; 
+  }
+  .hidden {
+    display: none;
+  }
+  

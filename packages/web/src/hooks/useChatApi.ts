@@ -18,6 +18,12 @@ import {
   CreateShareIdResponse,
   FindShareIdResponse,
   GetSharedChatResponse,
+  CreatePromptsRequest,
+  CreatePromptsResponse,
+  ListPromptsResponse,
+  UpdatePromptRequest,
+  UpdatePromptResponse,
+
 } from 'generative-ai-use-cases-jp';
 import {
   LambdaClient,
@@ -44,6 +50,21 @@ const useChatApi = () => {
     ): Promise<CreateMessagesResponse> => {
       const chatId = decomposeChatId(_chatId);
       const res = await http.post(`chats/${chatId}/messages`, req);
+      return res.data;
+    },
+    createPrompts: async (
+      req: CreatePromptsRequest
+    ): Promise<CreatePromptsResponse> => {
+      const res = await http.post(`chats/prompts`, req);
+      return res.data;
+    },
+    listPrompts: () => {
+      return http.get<ListPromptsResponse>( `chats/prompts/listprompts`);
+    },
+    updatePrompt: async (
+      req: UpdatePromptRequest
+    ): Promise<UpdatePromptResponse> => {
+      const res = await http.post(`chats/prompts/prompt`, req);
       return res.data;
     },
     deleteChat: async (chatId: string) => {

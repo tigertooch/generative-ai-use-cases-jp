@@ -8,7 +8,7 @@ import {
   createBrowserRouter,
   RouteObject,
 } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
+// import LandingPage from './pages/LandingPage';
 import Setting from './pages/Setting';
 import ChatPage from './pages/ChatPage';
 import SharedChatPage from './pages/SharedChatPage';
@@ -34,8 +34,8 @@ const recognizeFileEnabled: boolean =
 
 const routes: RouteObject[] = [
   {
-    path: '/',
-    element: <LandingPage />,
+    path: '/rag',
+    element: <RagPage />,
   },
   {
     path: '/setting',
@@ -113,7 +113,7 @@ const routes: RouteObject[] = [
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/rag',
     element: samlAuthEnabled ? <AuthWithSAML /> : <AuthWithUserpool />,
     children: routes,
   },

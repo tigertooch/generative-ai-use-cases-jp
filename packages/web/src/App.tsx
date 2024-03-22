@@ -1,22 +1,22 @@
-import React, { useMemo } from 'react';
+import React, { useMemo ,useState,useContext,useEffect} from 'react';
 import { useLocation } from 'react-router-dom';
 import {
   PiList,
-  PiHouse,
+  // PiHouse,
   PiChatCircleText,
-  PiPencil,
-  PiNote,
-  PiChatsCircle,
-  PiPenNib,
-  PiMagnifyingGlass,
-  PiTranslate,
-  PiImages,
-  PiSpeakerHighBold,
-  PiGear,
-  PiGlobe,
+  // PiPencil,
+  // PiNote,
+  // PiChatsCircle,
+  // PiPenNib,
+  // PiMagnifyingGlass,
+  // PiTranslate,
+  // PiImages,
+  // PiSpeakerHighBold,
+  // PiGear,
+  // PiGlobe,
   PiX,
-  PiRobot,
-  PiUploadSimple,
+  // PiRobot,
+  // PiUploadSimple,
 } from 'react-icons/pi';
 import { Outlet } from 'react-router-dom';
 import Drawer, { ItemProps } from './components/Drawer';
@@ -26,105 +26,113 @@ import useDrawer from './hooks/useDrawer';
 import useConversation from './hooks/useConversation';
 import PopupInterUseCasesDemo from './components/PopupInterUseCasesDemo';
 import useInterUseCases from './hooks/useInterUseCases';
+import {SuggestionPanel} from './components/SuggestionPanel';
+import {NewSuggestionItemPanel} from './components/NewSuggestionItemPanel';
+import {AppStateContext } from "./state/AppProvider";
+import {SugguestionItem } from './hooks/useModel';
 
 const ragEnabled: boolean = import.meta.env.VITE_APP_RAG_ENABLED === 'true';
-const agentEnabled: boolean = import.meta.env.VITE_APP_AGENT_ENABLED === 'true';
-const recognizeFileEnabled: boolean =
-  import.meta.env.VITE_APP_RECOGNIZE_FILE_ENABLED === 'true';
+//const agentEnabled: boolean = import.meta.env.VITE_APP_AGENT_ENABLED === 'true';
+//const recognizeFileEnabled: boolean =
+//  import.meta.env.VITE_APP_RECOGNIZE_FILE_ENABLED === 'true';
 
 const items: ItemProps[] = [
-  {
-    label: 'ホーム',
-    to: '/',
-    icon: <PiHouse />,
-    display: 'usecase' as const,
-  },
-  {
-    label: '設定情報',
-    to: '/setting',
-    icon: <PiGear />,
-    display: 'none' as const,
-  },
-  {
-    label: 'チャット',
-    to: '/chat',
-    icon: <PiChatsCircle />,
-    display: 'usecase' as const,
-  },
+ // {
+  //   label: 'ホーム',
+  //   to: '/',
+  //   icon: <PiHouse />,
+  //   display: 'usecase' as const,
+  //   name:'home',
+  // },
+  // {
+  //   label: '設定情報',
+  //   to: '/setting',
+  //   icon: <PiGear />,
+  //   display: 'none' as const,
+  // },
+  // {
+  //   label: 'チャット',
+  //   to: '/chat',
+  //   icon: <PiChatsCircle />,
+  //   display: 'usecase' as const,
+  //   name:'chat',
+  // },
+
   ragEnabled
     ? {
         label: 'RAG チャット',
         to: '/rag',
         icon: <PiChatCircleText />,
         display: 'usecase' as const,
+        name:'rag',
       }
     : null,
-  agentEnabled
-    ? {
-        label: 'Agent チャット',
-        to: '/agent',
-        icon: <PiRobot />,
-        display: 'usecase' as const,
-      }
-    : null,
-  {
-    label: '文章生成',
-    to: '/generate',
-    icon: <PiPencil />,
-    display: 'usecase' as const,
-  },
-  {
-    label: '要約',
-    to: '/summarize',
-    icon: <PiNote />,
-    display: 'usecase' as const,
-  },
-  {
-    label: '校正',
-    to: '/editorial',
-    icon: <PiPenNib />,
-    display: 'usecase' as const,
-  },
-  {
-    label: '翻訳',
-    to: '/translate',
-    icon: <PiTranslate />,
-    display: 'usecase' as const,
-  },
-  {
-    label: 'Web コンテンツ抽出',
-    to: '/web-content',
-    icon: <PiGlobe />,
-    display: 'usecase' as const,
-  },
-  {
-    label: '画像生成',
-    to: '/image',
-    icon: <PiImages />,
-    display: 'usecase' as const,
-  },
-  {
-    label: '音声認識',
-    to: '/transcribe',
-    icon: <PiSpeakerHighBold />,
-    display: 'tool' as const,
-  },
-  recognizeFileEnabled
-    ? {
-        label: 'ファイルアップロード',
-        to: '/file',
-        icon: <PiUploadSimple />,
-        display: 'tool' as const,
-      }
-    : null,
-  ragEnabled
-    ? {
-        label: 'Kendra 検索',
-        to: '/kendra',
-        icon: <PiMagnifyingGlass />,
-        display: 'tool' as const,
-      }
-    : null,
+ // agentEnabled
+  //   ? {
+  //       label: 'Agent チャット',
+  //       to: '/agent',
+  //       icon: <PiRobot />,
+  //       display: 'usecase' as const,
+  //     }
+  //   : null,
+  // {
+  //   label: '文章生成',
+  //   to: '/generate',
+  //   icon: <PiPencil />,
+  //   display: 'usecase' as const,
+  // },
+  // {
+  //   label: '要約',
+  //   to: '/summarize',
+  //   icon: <PiNote />,
+  //   display: 'usecase' as const,
+  // },
+  // {
+  //   label: '校正',
+  //   to: '/editorial',
+  //   icon: <PiPenNib />,
+  //   display: 'usecase' as const,
+  // },
+  // {
+  //   label: '翻訳',
+  //   to: '/translate',
+  //   icon: <PiTranslate />,
+  //   display: 'usecase' as const,
+  // },
+  // {
+  //   label: 'Web コンテンツ抽出',
+  //   to: '/web-content',
+  //   icon: <PiGlobe />,
+  //   display: 'usecase' as const,
+  // },
+  // {
+  //   label: '画像生成',
+  //   to: '/image',
+  //   icon: <PiImages />,
+  //   display: 'usecase' as const,
+  // },
+  // {
+  //   label: '音声認識',
+  //   to: '/transcribe',
+  //   icon: <PiSpeakerHighBold />,
+  //   display: 'tool' as const,
+  // },
+  // recognizeFileEnabled
+  //   ? {
+  //       label: 'ファイルアップロード',
+  //       to: '/file',
+  //       icon: <PiUploadSimple />,
+  //       display: 'tool' as const,
+  //     }
+  //   : null,
+  // ragEnabled
+  //   ? {
+  //       label: 'Kendra 検索',
+  //       to: '/kendra',
+  //       icon: <PiMagnifyingGlass />,
+  //       display: 'tool' as const,
+  //     }
+  //   : null,
 ].flatMap((i) => (i !== null ? [i] : []));
 
 // /chat/:chatId の形式から :chatId を返す
@@ -152,9 +160,35 @@ const App: React.FC = () => {
     }
   }, [pathname, getConversationTitle]);
 
+
+  const appStateContext = useContext(AppStateContext)
+   // 处理点击事件的函数
+  //  const handleItemClick = (item) => {
+  //   // 假设 item 有一个属性可以用来判断是否为聊天页面，比如 id 或 name
+  //   if (item.name === 'chat') {
+  //     setIsOpenChat(true);
+  //   } else {
+  //     setIsOpenChat(false);
+  //   }
+  // };
+  useEffect(() => {
+    const messages = JSON.parse(localStorage.getItem("newSugguestionItems") || '[]');
+    setSugguestionItems(messages);
+  }, []);
+  
+
+  const [sugguestionItems, setSugguestionItems] = useState<SugguestionItem[]>([]);
+
+  const onSave = (sugguestionItem: SugguestionItem) => {
+    const newSugguestionItems = [...sugguestionItems, sugguestionItem];
+    setSugguestionItems(newSugguestionItems);
+    localStorage.setItem('newSugguestionItems', JSON.stringify(newSugguestionItems));
+  };
+
   return (
     <div className="screen:w-screen screen:h-screen overflow-x-hidden">
       <main className="flex-1">
+        <div className='bg-aws-smile h-20 rounded-lg'>asddddddddddddddddddddd</div>
         <header className="bg-aws-squid-ink visible flex h-12 w-full items-center justify-between text-lg text-white lg:invisible lg:h-0 print:hidden">
           <div className="flex w-10 items-center justify-start">
             <button
@@ -165,20 +199,17 @@ const App: React.FC = () => {
               <PiList />
             </button>
           </div>
-
           {label}
-
           {/* label を真ん中にするためのダミーのブロック */}
           <div className="w-10" />
         </header>
 
         <div
-          className={`fixed -left-64 top-0 z-50 transition-all lg:left-0 lg:z-0 ${
-            isOpenDrawer ? 'left-0' : '-left-64'
-          }`}>
+          className={`fixed -left-64 top-20 z-50 transition-all lg:left-0 lg:z-0 ${isOpenDrawer ? 'left-0' : '-left-64'}`}>
           <Drawer items={items} />
         </div>
-
+        <SuggestionPanel sugguestionItems={sugguestionItems}/>
+        {appStateContext?.state.isNewSuggestionOpen && <NewSuggestionItemPanel onSave={onSave}/>}
         <div
           id="smallDrawerFiller"
           className={`${isOpenDrawer ? 'visible' : 'invisible'} lg:invisible`}>
@@ -191,7 +222,7 @@ const App: React.FC = () => {
             <PiX />
           </ButtonIcon>
         </div>
-        <div className="text-aws-font-color lg:ml-64" id="main">
+        <div className="text-aws-font-color lg:ml-64 lg:mr-64" id="main">
           {/* ユースケース間連携時に表示 */}
           {isShow && <PopupInterUseCasesDemo />}
           <Outlet />

@@ -5,7 +5,7 @@ import useChat from '../hooks/useChat';
 import useChatApi from '../hooks/useChatApi';
 import useConversation from '../hooks/useConversation';
 import ChatMessage from '../components/ChatMessage';
-import PromptList from '../components/PromptList';
+// import PromptList from '../components/PromptList';
 import Button from '../components/Button';
 import ButtonCopy from '../components/ButtonCopy';
 import ModalDialog from '../components/ModalDialog';
@@ -13,10 +13,13 @@ import ExpandableField from '../components/ExpandableField';
 import useScroll from '../hooks/useScroll';
 import { PiArrowClockwiseBold, PiShareFatFill } from 'react-icons/pi';
 import { create } from 'zustand';
-import { ReactComponent as BedrockIcon } from '../assets/bedrock.svg';
+// import { ReactComponent as BedrockIcon } from '../assets/bedrock.svg';
 import { ChatPageLocationState } from '../@types/navigate';
 import { SelectField } from '@aws-amplify/ui-react';
 import { MODELS } from '../hooks/useModel';
+import styles from './ChatPage.module.css'; // 引入样式文件
+
+
 
 type StateType = {
   modelId: string;
@@ -186,10 +189,13 @@ const ChatPage: React.FC = () => {
     setInputSystemContext(currentSystemContext);
   }, [currentSystemContext, setInputSystemContext]);
 
+ 
+  
+
   return (
     <>
       <div className={`${!isEmpty ? 'screen:pb-36' : ''} relative`}>
-        <div className="invisible my-0 flex h-0 items-center justify-center text-xl font-semibold lg:visible lg:my-5 lg:h-min print:visible print:my-5 print:h-min">
+        <div className={"invisible my-0 flex h-0 items-center justify-center text-xl font-semibold lg:visible lg:my-5 lg:h-min print:visible print:my-5 print:h-min"}>
           {title}
         </div>
 
@@ -206,14 +212,9 @@ const ChatPage: React.FC = () => {
             ))}
           </SelectField>
         </div>
-
+        
         {((isEmpty && !loadingMessages) || loadingMessages) && (
           <div className="relative flex h-[calc(100vh-13rem)] flex-col items-center justify-center">
-            <BedrockIcon
-              className={`fill-gray-400 ${
-                loadingMessages ? 'animate-pulse' : ''
-              }`}
-            />
           </div>
         )}
 
@@ -253,17 +254,18 @@ const ChatPage: React.FC = () => {
           showingMessages.map((chat, idx) => (
             <div key={showSystemContext ? idx : idx + 1}>
               {idx === 0 && (
-                <div className="w-full border-b border-gray-300"></div>
+                <div className=" border-b border-gray-300"></div>
               )}
               <ChatMessage
                 chatContent={chat}
                 loading={loading && idx === showingMessages.length - 1}
               />
-              <div className="w-full border-b border-gray-300"></div>
+              <div className=" border-b border-gray-300"></div>
             </div>
           ))}
-
-        <div className="fixed bottom-0 z-0 flex w-full flex-col items-center justify-center lg:pr-64 print:hidden">
+        
+        {/* <div className="fixed bottom-0 z-0 flex w-full flex-col items-center justify-center lg:pr-64 print:hidden"> */}
+        <div className={styles.fixedBottomContainer}> 
           {isEmpty && !loadingMessages && !chatId && (
             <ExpandableField
               label="システムコンテキスト"
@@ -309,7 +311,7 @@ const ChatPage: React.FC = () => {
         </div>
       </div>
 
-      {isEmpty && !loadingMessages && <PromptList />}
+      {/* {isEmpty && !loadingMessages && <PromptList />} */}
 
       <ModalDialog
         isOpen={showShareIdModal}

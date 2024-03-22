@@ -1,6 +1,8 @@
 import { Amplify, I18n } from 'aws-amplify';
 import { Authenticator, translations } from '@aws-amplify/ui-react';
+import './AuthWithUserpool.css';
 import App from '../App.tsx';
+import { AppStateProvider } from "../state/AppProvider";
 
 const selfSignUpEnabled: boolean =
   import.meta.env.VITE_APP_SELF_SIGN_UP_ENABLED === 'true';
@@ -19,17 +21,26 @@ const AuthWithUserpool: React.FC = () => {
   I18n.setLanguage('ja');
 
   return (
-    <Authenticator
-      hideSignUp={!selfSignUpEnabled}
-      components={{
-        Header: () => (
-          <div className="text-aws-font-color mb-5 mt-10 flex justify-center text-3xl">
-            Generative AI Use Cases on AWS
-          </div>
-        ),
-      }}>
-      <App />
-    </Authenticator>
+    // <ThemeProvider theme={myTheme}>
+      <>
+      <Authenticator
+        hideSignUp={!selfSignUpEnabled}
+        components={{
+          Header: () => (
+            <div>
+              <div className="text-aws-font-color mb-5 mt-10 flex justify-center text-3xl" style={{marginTop: '180px'}}>
+              <span style={{ fontSize: '24px' }}>Generative AI on</span><span style={{ marginLeft: '100px',fontSize: '24px' }}>Systems</span>
+              </div>
+            </div>
+          ),
+        }}>
+        <AppStateProvider>
+          <App />
+        </AppStateProvider>
+        
+      </Authenticator>
+      </>
+   // </ThemeProvider>
   );
 };
 

@@ -7,20 +7,22 @@ import useDrawer from '../hooks/useDrawer';
 import useVersion from '../hooks/useVersion';
 import IconWithDot from './IconWithDot';
 import {
-  PiGithubLogo,
+  // PiGithubLogo,
   PiGear,
-  PiBookOpen,
+  // PiBookOpen,
   PiMagnifyingGlass,
 } from 'react-icons/pi';
-import { ReactComponent as BedrockIcon } from '../assets/bedrock.svg';
+// import { ReactComponent as BedrockIcon } from '../assets/bedrock.svg';
 import ExpandableMenu from './ExpandableMenu';
 import ChatList from './ChatList';
+import Button from './Button';
 
 export type ItemProps = BaseProps & {
   label: string;
   to: string;
   icon: JSX.Element;
   display: 'usecase' | 'tool' | 'none';
+  name:string;
 };
 
 const Item: React.FC<ItemProps> = (props) => {
@@ -51,40 +53,40 @@ const Item: React.FC<ItemProps> = (props) => {
   );
 };
 
-type RefLinkProps = BaseProps & {
-  label: string;
-  to: string;
-  icon: JSX.Element;
-};
+// type RefLinkProps = BaseProps & {
+//   label: string;
+//   to: string;
+//   icon: JSX.Element;
+// };
 
-const RefLink: React.FC<RefLinkProps> = (props) => {
-  const { switchOpen } = useDrawer();
+// const RefLink: React.FC<RefLinkProps> = (props) => {
+//   const { switchOpen } = useDrawer();
 
-  // 狭い画面の場合は、クリックしたらDrawerを閉じる
-  const onClick = useCallback(() => {
-    if (
-      document
-        .getElementById('smallDrawerFiller')
-        ?.classList.contains('visible')
-    ) {
-      switchOpen();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+//   // 狭い画面の場合は、クリックしたらDrawerを閉じる
+//   const onClick = useCallback(() => {
+//     if (
+//       document
+//         .getElementById('smallDrawerFiller')
+//         ?.classList.contains('visible')
+//     ) {
+//       switchOpen();
+//     }
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, []);
 
-  return (
-    <Link
-      className={`flex h-8 w-fit cursor-pointer items-center rounded px-1 py-2 ${props.className}`}
-      to={props.to}
-      onClick={onClick}
-      target="_blank">
-      <div className="mr-1 flex size-6 items-center justify-center">
-        {props.icon}
-      </div>
-      <div>{props.label}</div>
-    </Link>
-  );
-};
+//   return (
+//     <Link
+//       className={`flex h-8 w-fit cursor-pointer items-center rounded px-1 py-2 ${props.className}`}
+//       to={props.to}
+//       onClick={onClick}
+//       target="_blank">
+//       <div className="mr-1 flex size-6 items-center justify-center">
+//         {props.icon}
+//       </div>
+//       <div>{props.label}</div>
+//     </Link>
+//   );
+// };
 
 type Props = BaseProps & {
   items: ItemProps[];
@@ -123,9 +125,16 @@ const Drawer: React.FC<Props> = (props) => {
   return (
     <>
       <nav
-        className={`bg-aws-squid-ink flex h-screen w-64 flex-col justify-between text-sm text-white  print:hidden`}>
-        <div className="text-aws-smile mx-3 my-2 text-xs">
-          ユースケース <span className="text-gray-400">(生成AI)</span>
+        className={`custom-gray bg-aws-squid-ink border-r flex w-64 flex-col justify-between text-sm text-black  print:hidden`} >
+        {/* <div className="text-gray-400 mx-3 my-2 text-xs">
+          ユースケース 
+        </div> */}
+        <div className='flex justify-center p-2'>
+          <Button className="w-11/12" onClick={() => console.log(1)}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="fill-current w-5 h-5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>&nbsp;New Chat
+          </Button>
         </div>
         <div className="scrollbar-thin scrollbar-thumb-white ml-2 mr-1 h-full overflow-y-auto">
           {usecases.map((item, idx) => (
@@ -135,6 +144,7 @@ const Drawer: React.FC<Props> = (props) => {
               icon={item.icon}
               to={item.to}
               display={item.display}
+              name={item.name}
             />
           ))}
         </div>
@@ -153,6 +163,7 @@ const Drawer: React.FC<Props> = (props) => {
                     icon={item.icon}
                     to={item.to}
                     display={item.display}
+                    name={item.name}
                   />
                 ))}
               </div>
@@ -177,7 +188,7 @@ const Drawer: React.FC<Props> = (props) => {
             <ChatList className="mr-1" searchWords={searchWords} />
           </div>
         </ExpandableMenu>
-        <div className="border-b" />
+        {/* <div className="border-b" />
         <ExpandableMenu
           title="リンク"
           defaultOpened={false}
@@ -199,7 +210,7 @@ const Drawer: React.FC<Props> = (props) => {
               label="Claude Prompt Engineering"
             />
           </div>
-        </ExpandableMenu>
+        </ExpandableMenu> */}
         <div className="flex items-center justify-between border-t border-gray-400 px-3 py-2">
           <Link
             to="/setting"
