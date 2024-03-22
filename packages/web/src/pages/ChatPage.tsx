@@ -215,11 +215,6 @@ const ChatPage: React.FC = () => {
         
         {((isEmpty && !loadingMessages) || loadingMessages) && (
           <div className="relative flex h-[calc(100vh-13rem)] flex-col items-center justify-center">
-            <BedrockIcon
-              className={`fill-gray-400 ${
-                loadingMessages ? 'animate-pulse' : ''
-              }`}
-            />
           </div>
         )}
 

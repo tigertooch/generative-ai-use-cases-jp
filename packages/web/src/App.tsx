@@ -185,6 +185,7 @@ const App: React.FC = () => {
   return (
     <div className="screen:w-screen screen:h-screen overflow-x-hidden">
       <main className="flex-1">
+        <div className='bg-aws-smile h-20 rounded-lg'>asddddddddddddddddddddd</div>
         <header className="bg-aws-squid-ink visible flex h-12 w-full items-center justify-between text-lg text-white lg:invisible lg:h-0 print:hidden">
           <div className="flex w-10 items-center justify-start">
             <button
@@ -201,7 +202,7 @@ const App: React.FC = () => {
         </header>
 
         <div
-          className={`fixed -left-64 top-0 z-50 transition-all lg:left-0 lg:z-0 ${isOpenDrawer ? 'left-0' : '-left-64'}`}>
+          className={`fixed -left-64 top-20 z-50 transition-all lg:left-0 lg:z-0 ${isOpenDrawer ? 'left-0' : '-left-64'}`}>
           <Drawer items={items} />
         </div>
         <SuggestionPanel sugguestionItems={sugguestionItems}/>

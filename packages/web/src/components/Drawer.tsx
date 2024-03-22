@@ -125,7 +125,7 @@ const Drawer: React.FC<Props> = (props) => {
   return (
     <>
       <nav
-        className={`custom-gray bg-aws-squid-ink border-r flex h-screen w-64 flex-col justify-between text-sm text-black  print:hidden`} >
+        className={`custom-gray bg-aws-squid-ink border-r flex w-64 flex-col justify-between text-sm text-black  print:hidden`} >
         {/* <div className="text-gray-400 mx-3 my-2 text-xs">
           ユースケース 
         </div> */}
