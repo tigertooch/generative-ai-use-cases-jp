@@ -2,7 +2,6 @@ import { produce } from 'immer';
 import { useNavigate } from 'react-router-dom';
 import { create } from 'zustand';
 import { InterUseCase } from '../@types/navigate';
-import queryString from 'query-string';
 
 const useInterUseCasesState = create<{
   isShow: boolean;
@@ -65,9 +64,9 @@ const useInterUseCases = () => {
   } = useInterUseCasesState();
 
   const navigateUseCase_ = (usecase: InterUseCase) => {
-    const params: Record<string, string> = {};
+    const state: Record<string, string> = {};
 
-    Object.entries(usecase.params ?? {}).forEach(([key, { value }]) => {
+    Object.entries(usecase.state ?? {}).forEach(([key, { value }]) => {
       let replacedValue = value;
 
       // 遷移元の画面項目の値を埋め込む処理
@@ -81,10 +80,12 @@ const useInterUseCases = () => {
         );
       });
 
-      params[key] = replacedValue;
+      state[key] = replacedValue;
     });
 
-    navigate(`${usecase.path}?${queryString.stringify(params)}`);
+    navigate(usecase.path, {
+      state,
+    });
   };
 
   return {

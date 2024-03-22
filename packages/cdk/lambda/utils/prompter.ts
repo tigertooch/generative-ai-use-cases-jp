@@ -20,6 +20,5 @@ export const generatePrompt = (
       })
       .join(pt.join) +
     pt.suffix;
-
   return prompt;
 };

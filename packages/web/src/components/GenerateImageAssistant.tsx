@@ -1,18 +1,20 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Card from './Card';
 import InputChatContent from './InputChatContent';
-import Select from './Select';
 import { useLocation } from 'react-router-dom';
 import useChat from '../hooks/useChat';
 import { PiLightbulbFilamentBold, PiWarningFill } from 'react-icons/pi';
 import { BaseProps } from '../@types/common';
 import Button from './Button';
 import useScroll from '../hooks/useScroll';
+import { SelectField } from '@aws-amplify/ui-react';
+import { Model } from 'generative-ai-use-cases-jp';
 
 type Props = BaseProps & {
   modelId: string;
   onChangeModel: (s: string) => void;
   modelIds: string[];
+  textModels: Model[];
   content: string;
   isGeneratingImage: boolean;
   onChangeContent: (s: string) => void;
@@ -119,7 +121,11 @@ const GenerateImageAssistant: React.FC<Props> = (props) => {
   }, [loading]);
 
   const onSend = useCallback(() => {
-    postChat(props.content);
+    postChat(
+      props.content,
+      false,
+      props.textModels.find((m) => m.modelId === props.modelId)!
+    );
     props.onChangeContent('');
   }, [postChat, props]);
 
@@ -135,20 +141,23 @@ const GenerateImageAssistant: React.FC<Props> = (props) => {
         label="チャット形式で画像生成"
         help="チャット形式でプロンプトの生成と設定、画像生成を自動で行います。"
         className={`${props.className ?? ''} h-full pb-32`}>
-        <div className="mb-2 flex w-full">
-          <Select
-            value={props.modelId}
-            onChange={props.onChangeModel}
-            options={props.modelIds.map((m) => {
-              return { value: m, label: m };
-            })}
-          />
-        </div>
         <div
           id="image-assistant-chat"
-          className="h-full overflow-y-auto overflow-x-hidden pb-16">
+          className="h-full overflow-y-auto overflow-x-hidden">
+          <div className="mb-4 flex w-full">
+            <SelectField
+              label="モデル"
+              value={props.modelId}
+              onChange={(e) => props.onChangeModel(e.target.value)}>
+              {props.modelIds.map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </SelectField>
+          </div>
           {contents.length === 0 && (
-            <div className="rounded border border-gray-400 bg-gray-100/50 p-2 text-gray-600">
+            <div className="m-2 rounded border border-gray-400 bg-gray-100/50 p-2 text-gray-600">
               <div className="flex items-center font-bold">
                 <PiLightbulbFilamentBold className="mr-2" />
                 ヒント
@@ -273,7 +282,7 @@ const GenerateImageAssistant: React.FC<Props> = (props) => {
         </div>
         <div className="absolute bottom-0 z-0 -ml-2 flex w-full items-end justify-center pr-6">
           <InputChatContent
-            placeholder="出力したい画像の概要を入力"
+            placeholder="出力したい画像の概要を入力してください"
             fullWidth
             hideReset
             content={props.content}

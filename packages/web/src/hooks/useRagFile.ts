@@ -7,9 +7,7 @@ const useRagFile = () => {
 
   return {
     isS3Url: (url: string) => {
-      return /^https:\/\/(|[\w\\-]+\.)s3(|(\.|-)[\w\\-]+).amazonaws.com\//.test(
-        url
-      )
+      return /^https:\/\/(|[\w\\-]+\.)s3(|(\.|-)[\w\\-]+).amazonaws.com\//.test(url)
         ? true
         : false;
     },

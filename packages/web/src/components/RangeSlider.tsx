@@ -19,9 +19,7 @@ const RangeSlider: React.FC<Props> = (props) => {
         {props.label && (
           <div className="flex items-center">
             <label className="text-sm">{props.label}</label>
-            {props.help && (
-              <Help className="ml-1" message={props.help} position="center" />
-            )}
+            {props.help && <Help className="ml-1" message={props.help} />}
           </div>
         )}
         <input

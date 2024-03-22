@@ -5,7 +5,7 @@ import Tooltip from './Tooltip';
 
 type Props = BaseProps & {
   message: string;
-  position?: 'left' | 'right' | 'center';
+  direction?: 'left' | 'right';
 };
 
 const Help: React.FC<Props> = (props) => {

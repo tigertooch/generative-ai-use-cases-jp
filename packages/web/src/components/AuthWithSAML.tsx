@@ -2,24 +2,22 @@ import React, { useEffect, useState } from 'react';
 import App from '../App.tsx';
 import { Button, Text, Loader } from '@aws-amplify/ui-react';
 import { Amplify, Auth } from 'aws-amplify';
-import { useNavigate } from 'react-router-dom';
 import '@aws-amplify/ui-react/styles.css';
 
 const samlCognitoDomainName: string = import.meta.env
   .VITE_APP_SAML_COGNITO_DOMAIN_NAME;
-// const samlCognitoFederatedIdentityProviderName: string = import.meta.env
-//   .VITE_APP_SAML_COGNITO_FEDERATED_IDENTITY_PROVIDER_NAME;
-
+const samlCognitoFederatedIdentityProviderName: string = import.meta.env
+  .VITE_APP_SAML_COGNITO_FEDERATED_IDENTITY_PROVIDER_NAME;
 
 const AuthWithSAML: React.FC = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+
   // 未ログインの場合は、ログイン画面を表示する
   useEffect(() => {
     Auth.currentAuthenticatedUser()
       .then(() => {
-        setAuthenticated(false);
+        setAuthenticated(true);
       })
       .catch(() => {
         setAuthenticated(false);
@@ -30,10 +28,9 @@ const AuthWithSAML: React.FC = () => {
   }, []);
 
   const signIn = () => {
-    navigate('/app');
-    // Auth.federatedSignIn({
-    //   customProvider: samlCognitoFederatedIdentityProviderName,
-    // }); // cdk.json の値を指定
+    Auth.federatedSignIn({
+      customProvider: samlCognitoFederatedIdentityProviderName,
+    }); // cdk.json の値を指定
   };
 
   Amplify.configure({

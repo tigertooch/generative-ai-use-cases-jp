@@ -75,8 +75,6 @@ export class GenerativeAiUseCasesStack extends Stack {
 
     const auth = new Auth(this, 'Auth', {
       selfSignUpEnabled,
-      allowedIpV4AddressRanges: props.allowedIpV4AddressRanges,
-      allowedIpV6AddressRanges: props.allowedIpV6AddressRanges,
       allowedSignUpEmailDomains,
       samlAuthEnabled,
     });

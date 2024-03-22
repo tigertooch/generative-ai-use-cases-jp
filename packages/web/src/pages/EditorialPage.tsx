@@ -1,26 +1,26 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { Location, useLocation } from 'react-router-dom';
 import Card from '../components/Card';
 import Button from '../components/Button';
 import Textarea from '../components/Textarea';
 import ExpandableField from '../components/ExpandableField';
-import Switch from '../components/Switch';
-import Select from '../components/Select';
 import useChat from '../hooks/useChat';
 import { create } from 'zustand';
 import Texteditor from '../components/TextEditor';
 import { DocumentComment } from 'generative-ai-use-cases-jp';
 import debounce from 'lodash.debounce';
-import { EditorialPageQueryParams } from '../@types/navigate';
+import { editorialPrompt } from '../prompts';
+import { EditorialPageLocationState } from '../@types/navigate';
+import { SelectField } from '@aws-amplify/ui-react';
 import { MODELS } from '../hooks/useModel';
-import { getPrompter } from '../prompts';
-import queryString from 'query-string';
 
 const REGEX_BRACKET = /\{(?:[^{}])*\}/g;
 const REGEX_ZENKAKU =
   /[Ａ-Ｚａ-ｚ０-９！＂＃＄％＆＇（）＊＋，－．／：；＜＝＞？＠［＼］＾＿｀｛｜｝]/g;
 
 type StateType = {
+  modelId: string;
+  setModelId: (c: string) => void;
   sentence: string;
   setSentence: (s: string) => void;
   additionalContext: string;
@@ -34,6 +34,7 @@ type StateType = {
 
 const useEditorialPageState = create<StateType>((set) => {
   const INIT_STATE = {
+    modelId: '',
     sentence: '',
     additionalContext: '',
     comments: [],
@@ -41,6 +42,11 @@ const useEditorialPageState = create<StateType>((set) => {
   };
   return {
     ...INIT_STATE,
+    setModelId: (s: string) => {
+      set(() => ({
+        modelId: s,
+      }));
+    },
     setSentence: (s: string) => {
       set(() => ({
         sentence: s,
@@ -69,6 +75,8 @@ const useEditorialPageState = create<StateType>((set) => {
 
 const EditorialPage: React.FC = () => {
   const {
+    modelId,
+    setModelId,
     sentence,
     setSentence,
     additionalContext,
@@ -80,22 +88,10 @@ const EditorialPage: React.FC = () => {
     clear,
   } = useEditorialPageState();
 
-  const { search } = useLocation();
+  const { state } = useLocation() as Location<EditorialPageLocationState>;
   const { pathname } = useLocation();
-  const {
-    getModelId,
-    setModelId,
-    loading,
-    messages,
-    postChat,
-    clear: clearChat,
-  } = useChat(pathname);
-  const { modelIds: availableModels } = MODELS;
-  const modelId = getModelId();
-  const prompter = useMemo(() => {
-    return getPrompter(modelId);
-  }, [modelId]);
-  const [auto, setAuto] = useState(true);
+  const { loading, messages, postChat, clear: clearChat } = useChat(pathname);
+  const { modelIds: availableModels, textModels } = MODELS;
 
   // Memo 変数
   const filterComment = (
@@ -118,49 +114,44 @@ const EditorialPage: React.FC = () => {
   }, [sentence, loading]);
 
   useEffect(() => {
-    const _modelId = !modelId ? availableModels[0] : modelId;
-    if (search !== '') {
-      const params = queryString.parse(search) as EditorialPageQueryParams;
-      setSentence(params.sentence ?? '');
-      setModelId(
-        availableModels.includes(params.modelId ?? '')
-          ? params.modelId!
-          : _modelId
-      );
-    } else {
-      setModelId(_modelId);
+    if (state !== null) {
+      setSentence(state.sentence);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setSentence, modelId, availableModels, search]);
+  }, [state, setSentence]);
+
+  useEffect(() => {
+    if (!modelId) {
+      setModelId(availableModels[0]);
+    }
+  }, [modelId, availableModels, setModelId]);
 
   // 文章の更新時にコメントを更新
   useEffect(() => {
-    if (auto) {
-      // Claude だと全角を半角に変換して出力するため入力を先に正規化
-      if (sentence !== '') {
-        setSentence(
-          sentence
-            .replace(REGEX_ZENKAKU, (s) => {
-              return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
-            })
-            .replace(/[‐－―]/g, '-') // ハイフンなど
-            .replace(/[～〜]/g, '~') // チルダ
-            // eslint-disable-next-line no-irregular-whitespace
-            .replace(/　/g, ' ') // スペース
-        );
-      }
-
-      // debounce した後コメント更新
-      onSentenceChange(
-        sentence,
-        additionalContext,
-        comments,
-        commentState,
-        loading
+    // Claude だと全角を半角に変換して出力するため入力を先に正規化
+    if (sentence !== '') {
+      setSentence(
+        sentence
+          .replace(REGEX_ZENKAKU, (s) => {
+            return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
+          })
+          .replace(/[‐－―]/g, '-') // ハイフンなど
+          .replace(/[～〜]/g, '~') // チルダ
+          // eslint-disable-next-line no-irregular-whitespace
+          .replace(/　/g, ' ') // スペース
       );
     }
+
+    // debounce した後コメント更新
+    onSentenceChange(
+      modelId,
+      sentence,
+      additionalContext,
+      comments,
+      commentState,
+      loading
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sentence]);
+  }, [modelId, sentence]);
 
   // debounce した後コメントを更新
   // 入力を止めて1秒ほど待ってからコメントを更新し新規コメント追加リクエストを送信
@@ -168,6 +159,7 @@ const EditorialPage: React.FC = () => {
   const onSentenceChange = useCallback(
     debounce(
       (
+        _modelId: string,
         _sentence: string,
         _additionalContext: string,
         _comments: DocumentComment[],
@@ -185,7 +177,7 @@ const EditorialPage: React.FC = () => {
         // コメントがなくなったらコメントを取得
         const _shownComment = filterComment(_comments, _commentState);
         if (_shownComment.length === 0 && _sentence !== '' && !_loading) {
-          getAnnotation(_sentence, _additionalContext);
+          getAnnotation(_modelId, _sentence, _additionalContext);
         }
       },
       1000
@@ -226,23 +218,28 @@ const EditorialPage: React.FC = () => {
   };
 
   // LLM にリクエスト送信
-  const getAnnotation = (sentence: string, context: string) => {
+  const getAnnotation = (
+    modelId: string,
+    sentence: string,
+    context: string
+  ) => {
     setCommentState({});
     postChat(
-      prompter.editorialPrompt({
+      editorialPrompt.generatePrompt({
         sentence,
         context: context === '' ? undefined : context,
       }),
-      true
+      true,
+      textModels.find((m) => m.modelId === modelId)
     );
   };
 
   // コメントを取得
   const onClickExec = useCallback(() => {
     if (loading) return;
-    getAnnotation(sentence, additionalContext);
+    getAnnotation(modelId, sentence, additionalContext);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sentence, additionalContext, loading]);
+  }, [modelId, sentence, additionalContext, loading]);
 
   // リセット
   const onClickClear = useCallback(() => {
@@ -258,15 +255,18 @@ const EditorialPage: React.FC = () => {
       </div>
       <div className="col-span-12 col-start-1 mx-2 lg:col-span-10 lg:col-start-2 xl:col-span-10 xl:col-start-2">
         <Card label="校正したい文章">
-          <div className="mb-2 flex w-full items-center justify-between">
-            <Select
+          <div className="mb-4 flex w-full">
+            <SelectField
+              label="モデル"
+              labelHidden
               value={modelId}
-              onChange={setModelId}
-              options={availableModels.map((m) => {
-                return { value: m, label: m };
-              })}
-            />
-            <Switch label="自動校正" checked={auto} onSwitch={setAuto} />
+              onChange={(e) => setModelId(e.target.value)}>
+              {availableModels.map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </SelectField>
           </div>
           <Texteditor
             placeholder="入力してください"
