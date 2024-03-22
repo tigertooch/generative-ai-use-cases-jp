@@ -10,9 +10,9 @@ const selfSignUpEnabled: boolean =
 const AuthWithUserpool: React.FC = () => {
   Amplify.configure({
     Auth: {
-      userPoolId: "us-west-2_u0R9SBegd",
-      userPoolWebClientId: "u806j4mlioraqki4i9j8nstkv",
-      identityPoolId: "us-west-2:3428c34e-2ea4-4fe1-a9f9-7a91058cc244",
+      userPoolId: "ap-northeast-1_vCrTTUOB9",
+      userPoolWebClientId: "4dsgb871gcfp4sp1tlrlnj018o",
+      identityPoolId: "ap-northeast-1:e3d205a6-032f-4bf8-a9e1-c75a11961884",
       authenticationFlowType: 'USER_SRP_AUTH',
     },
   });
