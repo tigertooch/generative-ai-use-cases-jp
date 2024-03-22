@@ -3,8 +3,9 @@ import { useState ,useContext} from 'react';
 import { Dialog, DialogType} from '@fluentui/react';
 import {SugguestionItem } from '../hooks/useModel';
 import { AppStateContext } from "../state/AppProvider";
-import { Button, Radio, RadioGroupField, TextAreaField, TextField } from '@aws-amplify/ui-react';
+import { Radio, RadioGroupField, TextAreaField, TextField } from '@aws-amplify/ui-react';
 import style from './NewSuggestionItemPanel.module.css'
+import Button from './Button';
 
 export interface NewSuggestionItemPanelProps {
   onSave: (newItem: SugguestionItem) => void;
@@ -20,7 +21,7 @@ export const NewSuggestionItemPanel: React.FunctionComponent<NewSuggestionItemPa
     const appStateContext = useContext(AppStateContext) 
     const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [use, setUse] = useState('');
+  const [use, setUse] = useState('1');
     const saveDialog = () => {
       if (title.trim() !== '' && content.trim() !== '') {
         const newItem: SugguestionItem = {
@@ -29,7 +30,8 @@ export const NewSuggestionItemPanel: React.FunctionComponent<NewSuggestionItemPa
             content: content,
             use: use
           };
-          onSave(newItem);
+        onSave(newItem);
+        toggleHideDialog();
         }else{
           alert('Title and content cannot be empty.');
         }
@@ -42,7 +44,7 @@ export const NewSuggestionItemPanel: React.FunctionComponent<NewSuggestionItemPa
         <Dialog
         styles={style}
         hidden={!appStateContext?.state.isNewSuggestionOpen}
-        // onDismiss={toggleHideDialog}
+        onDismiss={toggleHideDialog}
           dialogContentProps={dialogContentProps}
         >
           <div className={"flex flex-col"} >
@@ -62,19 +64,20 @@ export const NewSuggestionItemPanel: React.FunctionComponent<NewSuggestionItemPa
               rows={10}
               onChange={(e) => setContent(e.target.value)} />
             
-            <RadioGroupField
+            {/* <RadioGroupField
+              value={use}
               onChange={ (e) => setUse(e.target.value) }
               legend="Row" name="row" direction="row">
               <Radio value="1">個人利用</Radio>
               <Radio value="0">共通利用</Radio>
-            </RadioGroupField>
+            </RadioGroupField> */}
         </div>
           <div
             className={"w-full flex justify-between"}>
-            <Button className="w-full m-2 bg-black text-white rounded-lg">削除</Button>
-            <Button className="w-full m-2 bg-black text-white rounded-lg">コピ-新規</Button>
-            <Button className="w-full m-2 bg-black text-white rounded-lg"onClick={toggleHideDialog} >キャンセル</Button>
-            <Button className="w-full m-2 bg-black text-white rounded-lg"onClick={saveDialog} >保存</Button>
+            <Button className="w-full m-2 bg-black text-white rounded-lg" onClick={toggleHideDialog}>削除</Button>
+            <Button className="w-full m-2 bg-black text-white rounded-lg" onClick={toggleHideDialog}>コピ-新規</Button>
+            <Button className="w-full m-2 bg-black text-white rounded-lg" onClick={toggleHideDialog} >キャンセル</Button>
+            <Button className="w-full m-2 bg-black text-white rounded-lg" onClick={saveDialog} >保存</Button>
           </div>
       </Dialog>
     </>
