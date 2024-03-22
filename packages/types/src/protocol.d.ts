@@ -4,6 +4,11 @@ import {
   ToBeRecordedMessage,
   UnrecordedMessage,
 } from './message';
+import {
+  ToBeRecordedPrompt,
+  RecordedPrompt,
+} from './prompt';
+
 import { Chat } from './chat';
 import {
   QueryCommandOutput,
@@ -27,6 +32,26 @@ export type CreateMessagesResponse = {
 
 export type ListChatsResponse = {
   chats: Chat[];
+};
+
+export type CreatePromptsRequest = {
+  prompts: ToBeRecordedPrompt[];
+};
+export type CreatePromptsResponse = {
+  prompts: RecordedPrompt[];
+};
+
+export type ListPromptsResponse = {
+  prompts: RecordedPrompt[];
+};
+
+export type UpdatePromptRequest = {
+  createdDate: string;
+  content: string;
+};
+
+export type UpdatePromptResponse = {
+  prompt: RecordedPrompt;
 };
 
 export type FindChatByIdResponse = {

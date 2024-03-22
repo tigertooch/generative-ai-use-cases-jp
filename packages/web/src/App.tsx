@@ -2,11 +2,11 @@ import React, { useMemo ,useState,useContext,useEffect} from 'react';
 import { useLocation } from 'react-router-dom';
 import {
   PiList,
-  PiHouse,
-  // PiChatCircleText,
+  // PiHouse,
+  PiChatCircleText,
   // PiPencil,
   // PiNote,
-  PiChatsCircle,
+  // PiChatsCircle,
   // PiPenNib,
   // PiMagnifyingGlass,
   // PiTranslate,
@@ -30,10 +30,11 @@ import {SuggestionPanel} from './components/SuggestionPanel';
 import {NewSuggestionItemPanel} from './components/NewSuggestionItemPanel';
 import {AppStateContext } from "./state/AppProvider";
 import {SugguestionItem } from './hooks/useModel';
+
 // const ragEnabled: boolean = import.meta.env.VITE_APP_RAG_ENABLED === 'true';
 // const agentEnabled: boolean = import.meta.env.VITE_APP_AGENT_ENABLED === 'true';
 // const recognizeFileEnabled: boolean =
-  import.meta.env.VITE_APP_RECOGNIZE_FILE_ENABLED === 'true';
+//   import.meta.env.VITE_APP_RECOGNIZE_FILE_ENABLED === 'true';
  
 const items: ItemProps[] = [
   // {
@@ -49,21 +50,20 @@ const items: ItemProps[] = [
   //   icon: <PiGear />,
   //   display: 'none' as const,
   // },
+  // {
+  //   label: 'チャット',
+  //   to: '/chat',
+  //   icon: <PiChatsCircle />,
+  //   display: 'usecase' as const,
+  //   name:'chat',
+  // },
   {
-    label: 'チャット',
-    to: '/chat',
-    icon: <PiChatsCircle />,
+    label: 'RAG チャット',
+    to: '/rag',
+    icon: <PiChatCircleText />,
     display: 'usecase' as const,
-    name:'chat',
+    name:'ragchat',
   },
-  // ragEnabled
-  //   ? {
-  //       label: 'RAG チャット',
-  //       to: '/rag',
-  //       icon: <PiChatCircleText />,
-  //       display: 'usecase' as const,
-  //     }
-  //   : null,
   // agentEnabled
   //   ? {
   //       label: 'Agent チャット',

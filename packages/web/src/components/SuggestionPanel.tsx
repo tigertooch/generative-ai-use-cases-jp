@@ -1,5 +1,5 @@
 import {useState ,useContext, useCallback  } from 'react';
-import styles from './SuggestionPanel.module.css'; // 引入样式文件
+// import styles from './SuggestionPanel.module.css'; // 引入样式文件
 import {SugguestionItem } from '../hooks/useModel';
 import { BaseProps } from '../@types/common';
 import {AppStateContext } from "../state/AppProvider";
@@ -28,7 +28,7 @@ export const SuggestionPanel: React.FC<Props>= (props) => {
     setExpandedId(id);
   };
   // 编辑提示内容的方法
-  const handlePromptEdit = (e: React.MouseEvent) => {
+  const handlePromptEdit = () => {
     console.log(1)
   };
 
@@ -76,7 +76,7 @@ export const SuggestionPanel: React.FC<Props>= (props) => {
                       <div> 
                           <pre className="whitespace-pre-wrap relative text-left rounded-lg pl-2 ">
                             {sugguestionItem.content}
-                            <button onClick={(e) => handlePromptEdit(e)} className={"absolute right-0 "}> 
+                            <button onClick={() => handlePromptEdit()} className={"absolute right-0 "}> 
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"  className="tabler-icon tabler-icon-pencil w-5 h-5"> 
                               <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path> 
                               <path d="M13.5 6.5l4 4"></path> 

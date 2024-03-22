@@ -209,6 +209,39 @@ export class Api extends Construct {
     });
     table.grantWriteData(createMessagesFunction);
 
+
+    const createPromptsFunction = new NodejsFunction(this, 'CreatePrompts', {
+      runtime: Runtime.NODEJS_18_X,
+      entry: './lambda/createPrompts.ts',
+      timeout: Duration.minutes(15),
+      environment: {
+        TABLE_NAME: 'Prompt',
+      },
+    });
+    table.grantWriteData(createPromptsFunction);
+
+    const updatePromptFunction = new NodejsFunction(this,'UpdatePrompt', {
+        runtime: Runtime.NODEJS_18_X,
+        entry: './lambda/updatePrompt.ts',
+        timeout: Duration.minutes(15),
+        environment: {
+          TABLE_NAME: 'Prompt',
+        },
+      }
+    );
+    table.grantReadWriteData(updatePromptFunction);
+
+    const listPromptsFunction = new NodejsFunction(this, 'ListPrompts', {
+      runtime: Runtime.NODEJS_18_X,
+      entry: './lambda/listPrompts.ts',
+      timeout: Duration.minutes(15),
+      environment: {
+        TABLE_NAME: 'Prompt',
+      },
+    });
+    table.grantReadData(listPromptsFunction);
+
+
     const updateChatTitleFunction = new NodejsFunction(
       this,
       'UpdateChatTitle',
@@ -408,6 +441,27 @@ export class Api extends Construct {
     messagesResource.addMethod(
       'GET',
       new LambdaIntegration(listMessagesFunction),
+      commonAuthorizerProps
+    );
+    const promptsResource = chatsResource.addResource('prompts');
+    // POST: /chats/prompts
+    promptsResource.addMethod(
+      'POST',
+      new LambdaIntegration(createPromptsFunction),
+      commonAuthorizerProps
+    );
+    const promptResource = promptsResource.addResource('prompt');
+    // POST: /chats/prompts/prompt
+    promptResource.addMethod(
+      'POST',
+      new LambdaIntegration(updatePromptFunction),
+      commonAuthorizerProps
+    );
+    const listpromptResource = promptsResource.addResource('listprompts');
+    // GET: /chats/prompts/listprompts
+    listpromptResource.addMethod(
+      'GET',
+      new LambdaIntegration(listPromptsFunction),
       commonAuthorizerProps
     );
 

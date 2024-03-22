@@ -7,12 +7,12 @@ import useDrawer from '../hooks/useDrawer';
 import useVersion from '../hooks/useVersion';
 import IconWithDot from './IconWithDot';
 import {
-  PiGithubLogo,
+  // PiGithubLogo,
   PiGear,
-  PiBookOpen,
+  // PiBookOpen,
   PiMagnifyingGlass,
 } from 'react-icons/pi';
-import { ReactComponent as BedrockIcon } from '../assets/bedrock.svg';
+// import { ReactComponent as BedrockIcon } from '../assets/bedrock.svg';
 import ExpandableMenu from './ExpandableMenu';
 import ChatList from './ChatList';
 import Button from './Button';
@@ -53,40 +53,40 @@ const Item: React.FC<ItemProps> = (props) => {
   );
 };
 
-type RefLinkProps = BaseProps & {
-  label: string;
-  to: string;
-  icon: JSX.Element;
-};
+// type RefLinkProps = BaseProps & {
+//   label: string;
+//   to: string;
+//   icon: JSX.Element;
+// };
 
-const RefLink: React.FC<RefLinkProps> = (props) => {
-  const { switchOpen } = useDrawer();
+// const RefLink: React.FC<RefLinkProps> = (props) => {
+//   const { switchOpen } = useDrawer();
 
-  // 狭い画面の場合は、クリックしたらDrawerを閉じる
-  const onClick = useCallback(() => {
-    if (
-      document
-        .getElementById('smallDrawerFiller')
-        ?.classList.contains('visible')
-    ) {
-      switchOpen();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+//   // 狭い画面の場合は、クリックしたらDrawerを閉じる
+//   const onClick = useCallback(() => {
+//     if (
+//       document
+//         .getElementById('smallDrawerFiller')
+//         ?.classList.contains('visible')
+//     ) {
+//       switchOpen();
+//     }
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, []);
 
-  return (
-    <Link
-      className={`flex h-8 w-fit cursor-pointer items-center rounded px-1 py-2 ${props.className}`}
-      to={props.to}
-      onClick={onClick}
-      target="_blank">
-      <div className="mr-1 flex size-6 items-center justify-center">
-        {props.icon}
-      </div>
-      <div>{props.label}</div>
-    </Link>
-  );
-};
+//   return (
+//     <Link
+//       className={`flex h-8 w-fit cursor-pointer items-center rounded px-1 py-2 ${props.className}`}
+//       to={props.to}
+//       onClick={onClick}
+//       target="_blank">
+//       <div className="mr-1 flex size-6 items-center justify-center">
+//         {props.icon}
+//       </div>
+//       <div>{props.label}</div>
+//     </Link>
+//   );
+// };
 
 type Props = BaseProps & {
   items: ItemProps[];

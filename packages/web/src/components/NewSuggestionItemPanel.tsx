@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState ,useContext} from 'react';
-import { Dialog, DialogType, DialogFooter } from '@fluentui/react';
+import { Dialog, DialogType} from '@fluentui/react';
 import {SugguestionItem } from '../hooks/useModel';
 import { AppStateContext } from "../state/AppProvider";
 import { Button, Radio, RadioGroupField, TextAreaField, TextField } from '@aws-amplify/ui-react';

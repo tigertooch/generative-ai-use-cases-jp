@@ -5,7 +5,7 @@ import useChat from '../hooks/useChat';
 import useChatApi from '../hooks/useChatApi';
 import useConversation from '../hooks/useConversation';
 import ChatMessage from '../components/ChatMessage';
-import PromptList from '../components/PromptList';
+// import PromptList from '../components/PromptList';
 import Button from '../components/Button';
 import ButtonCopy from '../components/ButtonCopy';
 import ModalDialog from '../components/ModalDialog';

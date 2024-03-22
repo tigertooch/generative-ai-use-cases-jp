@@ -33,9 +33,9 @@
       "stability.stable-diffusion-xl-v0"
     ],
     "endpointNames": [],
-    "agentEnabled": false,
+    "agentEnabled": true,
     "agentRegion": "ap-northeast-1",
-    "searchAgentEnabled": false,
+    "searchAgentEnabled": true,
     "searchApiKey": "",
     "agents": [],
     "allowedIpV4AddressRanges": null,
