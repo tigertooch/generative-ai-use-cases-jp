@@ -6,12 +6,13 @@ import {AppStateContext } from "../state/AppProvider";
 
 import { useNavigate } from 'react-router-dom';
 import Button from './Button';
+import useDrawer from '../hooks/useDrawer';
 
 type Props = BaseProps & {
   sugguestionItems?: SugguestionItem[];
 };
 export const SuggestionPanel: React.FC<Props>= (props) => {
-
+  const { switchOpen: switchDrawer, opened: isOpenDrawer } = useDrawer();
   const appStateContext = useContext(AppStateContext)
   const [expandedId, setExpandedId] = useState(0);
 
@@ -44,7 +45,7 @@ export const SuggestionPanel: React.FC<Props>= (props) => {
   }, [props, navigate]);
 
   return (
-    <nav className='custom-gray absolute right-0 bg-aws-squid-ink flex h-screen w-64 flex-col text-sm text-black  print:hidden'>
+    <nav className={`top-20 z-50 transition-all fixed -right-64 bg-aws-squid-ink lg:right-0 lg:z-0 flex w-64 flex-col text-sm text-black print:hidden ${isOpenDrawer ? 'right-0' : '-right-64'}`}>
       <div className='flex justify-center p-2'>
         <Button className="w-11/12" onClick={addNewSuggestionItem}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="fill-current w-5 h-5">
