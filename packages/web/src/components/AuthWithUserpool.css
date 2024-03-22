@@ -47,4 +47,14 @@
     /* width: 100%;  */
     margin: 0 auto ;
     border-radius: 6px !important;
-  }
+}
+.amplify-heading.amplify-heading--3{
+    margin: 0 auto !important;
+}
+.amplify-button.amplify-field-group__control.amplify-button--primary{
+    background-color: #0e0f0f!important;
+    width: 25% !important; /* 或您希望的具体宽度，例如 200px */
+    margin: 0 auto !important; /* 居中显示 */
+    border-radius: 8px !important;
+    margin-top: 20px !important;
+}

@@ -3,32 +3,32 @@ import { Model } from 'generative-ai-use-cases-jp';
 const modelRegion = import.meta.env.VITE_APP_MODEL_REGION;
 
 // 環境変数からモデル名などを取得
-// const modelIds: string[] = JSON.parse(import.meta.env.VITE_APP_MODEL_IDS)
-//   .map((name: string) => name.trim())
-//   .filter((name: string) => name);
+const modelIds: string[] = JSON.parse(import.meta.env.VITE_APP_MODEL_IDS)
+  .map((name: string) => name.trim())
+  .filter((name: string) => name);
 
-  const modelIds: string[] = ["1"];
+  // const modelIds: string[] = ["1"];
 
-// const endpointNames: string[] = JSON.parse(
-//   import.meta.env.VITE_APP_ENDPOINT_NAMES
-// )
-//   .map((name: string) => name.trim())
-//   .filter((name: string) => name);
-const endpointNames: string[] =  ["2"];
+const endpointNames: string[] = JSON.parse(
+  import.meta.env.VITE_APP_ENDPOINT_NAMES
+)
+  .map((name: string) => name.trim())
+  .filter((name: string) => name);
+// const endpointNames: string[] =  ["2"];
 
-// const imageGenModelIds: string[] = JSON.parse(
-//   import.meta.env.VITE_APP_IMAGE_MODEL_IDS
-// )
-//   .map((name: string) => name.trim())
-//   .filter((name: string) => name);
+const imageGenModelIds: string[] = JSON.parse(
+  import.meta.env.VITE_APP_IMAGE_MODEL_IDS
+)
+  .map((name: string) => name.trim())
+  .filter((name: string) => name);
 
-  const imageGenModelIds: string[] =  ["3"];
+  // const imageGenModelIds: string[] =  ["3"];
 
-// const agentNames: string[] = JSON.parse(import.meta.env.VITE_APP_AGENT_NAMES)
-//   .map((name: string) => name.trim())
-//   .filter((name: string) => name);
+const agentNames: string[] = JSON.parse(import.meta.env.VITE_APP_AGENT_NAMES)
+  .map((name: string) => name.trim())
+  .filter((name: string) => name);
 
-  const agentNames: string[] = ["4"]
+  // const agentNames: string[] = ["4"]
 
 // モデルオブジェクトの定義
 const textModels = [
