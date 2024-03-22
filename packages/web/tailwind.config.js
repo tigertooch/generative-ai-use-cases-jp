@@ -15,7 +15,7 @@ export default {
         'aws-anchor': '#003181',
         'aws-sky': '#0000001f',
         'aws-rind': '#FBD8BF',
-        'aws-smile': '#3f4c56',
+        'aws-smile': '#000',
         'aws-font-color': '#232F3E',
         'aws-ml': '#01A88D',
         'aws-backgroud':'#3f4c56',

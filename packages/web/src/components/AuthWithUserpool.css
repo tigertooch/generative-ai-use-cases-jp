@@ -24,11 +24,11 @@
     border-radius: 4px !important;
 }
 .amplify-flex.amplify-field.amplify-textfield{
-    width: 80% !important;
+    width: 99% !important;
     margin: 0 auto !important; /* 居中显示 */
 }
 .amplify-flex.amplify-field.amplify-textfield.amplify-passwordfield{
-    width: 80% !important;
+    width: 99% !important;
     margin: 0 auto !important; /* 居中显示 */
 }
 .amplify-button.amplify-field-group__control.amplify-button--primary.amplify-button--fullwidth {

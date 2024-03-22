@@ -67,6 +67,7 @@ export interface SugguestionItem {
   id: number;
   title: string;
   content: string;
+  use: string;
 }
 export interface AppState {
   isSuggestionOpen: boolean;

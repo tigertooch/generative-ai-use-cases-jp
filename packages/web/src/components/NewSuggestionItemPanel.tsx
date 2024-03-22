@@ -1,35 +1,34 @@
 import * as React from 'react';
 import { useState ,useContext} from 'react';
-import { Dialog, DialogType, DialogFooter } from '@fluentui/react/lib/Dialog';
-import { PrimaryButton, DefaultButton } from '@fluentui/react/lib/Button';
-import styles from './NewSuggestionItemPanel.module.css'; // 引入样式文件
+import { Dialog, DialogType, DialogFooter } from '@fluentui/react';
 import {SugguestionItem } from '../hooks/useModel';
-import {AppStateContext } from "../state/AppProvider";
+import { AppStateContext } from "../state/AppProvider";
+import { Button, Radio, RadioGroupField, TextAreaField, TextField } from '@aws-amplify/ui-react';
+import style from './NewSuggestionItemPanel.module.css'
 
 export interface NewSuggestionItemPanelProps {
   onSave: (newItem: SugguestionItem) => void;
 }
-const modelProps = {
-  isBlocking: false,
-  styles: { main: { maxWidth: 600 } },
-};
+
 const dialogContentProps = {
-  type: DialogType.largeHeader,
+  type: DialogType.normal,
   title: 'プロンプト登録',
 };
+
 
 export const NewSuggestionItemPanel: React.FunctionComponent<NewSuggestionItemPanelProps> = ({ onSave }) => {
     const appStateContext = useContext(AppStateContext) 
     const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
+  const [content, setContent] = useState('');
+  const [use, setUse] = useState('');
     const saveDialog = () => {
       if (title.trim() !== '' && content.trim() !== '') {
         const newItem: SugguestionItem = {
             id: Date.now(), // 使用时间戳作为唯一ID
             title: title,
-            content: content
+            content: content,
+            use: use
           };
-
           onSave(newItem);
         }else{
           alert('Title and content cannot be empty.');
@@ -40,40 +39,43 @@ export const NewSuggestionItemPanel: React.FunctionComponent<NewSuggestionItemPa
     };
     return (
     <>
-      <Dialog
+        <Dialog
+        styles={style}
         hidden={!appStateContext?.state.isNewSuggestionOpen}
         // onDismiss={toggleHideDialog}
-        dialogContentProps={dialogContentProps}
-        modalProps={modelProps}
-      >
-        <div className={styles.divClass} >
-            <input
-                type="text"
-                id="prompt_title"
-                className={styles.inputClass}
-                placeholder="タイトルを入力してください。"
-                value={title} // 将input的值绑定到title状态
-                onChange={(e) => setTitle(e.target.value)} // 当用户输入时更新title状态
+          dialogContentProps={dialogContentProps}
+        >
+          <div className={"flex flex-col"} >
+            <TextField
+              className={"m-1"}
+              placeholder="タイトルを入力してください。"
+              label="タイトル"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
-            <textarea
-                    id="prompt_content"
-                    className={styles.textareaClass}
-                    placeholder="プロンプトを入力してください。\n\n～例～\n以下の文章を要約してください。\n\n#内容\n[$$content$$]"
-                    rows={10}
-                    value={content} // 将textarea的值绑定到content状态
-                    onChange={(e) => setContent(e.target.value)} // 当用户输入时更新content状态
-            />
-            <div className="">
-            </div>
-            <p className={styles.pClass}>※[$$content$$] を記載するとプロンプト欄に入力された文字が[$$content$$]に置き換えられます。</p>
-            <p id="prompt_sample_exp"  className={styles.pClass}>下記が[$$content$$]のサンプルです。</p>
-            <textarea id="prompt_sample"   className={styles.textareaClass} 
-                placeholder="サテライトオフィスは、Google Workspace(G Suite) / Microsoft 365(Office365) / LINE WORKS / Workplace by Facebook / Dropbox Business の アドオンサービスを提供中です。導入検討段階の支援も可能です。未体験&amp;導入後拡張希望の方もお気軽にご連絡下さい。" rows={5}/>
+            
+            <TextAreaField
+              className={"m-1"}
+              label="内容"
+              value={content}
+              placeholder={"プロンプトを入力してください。\n\n～例～\n以下の文章を要約してください。\n\n#内容\n[$$content$$]"}
+              rows={10}
+              onChange={(e) => setContent(e.target.value)} />
+            
+            <RadioGroupField
+              onChange={ (e) => setUse(e.target.value) }
+              legend="Row" name="row" direction="row">
+              <Radio value="1">個人利用</Radio>
+              <Radio value="0">共通利用</Radio>
+            </RadioGroupField>
         </div>
-        <DialogFooter>
-          <PrimaryButton onClick={saveDialog} text="Save" />
-          <DefaultButton onClick={toggleHideDialog} text="Cancel" />
-        </DialogFooter>
+          <div
+            className={"w-full flex justify-between"}>
+            <Button className="w-full m-2 bg-black text-white rounded-lg">削除</Button>
+            <Button className="w-full m-2 bg-black text-white rounded-lg">コピ-新規</Button>
+            <Button className="w-full m-2 bg-black text-white rounded-lg"onClick={toggleHideDialog} >キャンセル</Button>
+            <Button className="w-full m-2 bg-black text-white rounded-lg"onClick={saveDialog} >保存</Button>
+          </div>
       </Dialog>
     </>
   );

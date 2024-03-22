@@ -1,6 +1,6 @@
 import { Amplify, I18n } from 'aws-amplify';
 import { Authenticator, translations } from '@aws-amplify/ui-react';
-import './AuthWithUserpool.css'; 
+import './AuthWithUserpool.css';
 import App from '../App.tsx';
 import { AppStateProvider } from "../state/AppProvider";
 
