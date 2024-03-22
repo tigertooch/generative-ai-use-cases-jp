@@ -74,8 +74,8 @@ export const NewSuggestionItemPanel: React.FunctionComponent<NewSuggestionItemPa
         </div>
           <div
             className={"w-full flex justify-between"}>
-            <Button className="w-full m-2 bg-black text-white rounded-lg" onClick={toggleHideDialog}>削除</Button>
-            <Button className="w-full m-2 bg-black text-white rounded-lg" onClick={toggleHideDialog}>コピ-新規</Button>
+            <Button className="w-full m-2 bg-black text-white rounded-lg" disabled onClick={toggleHideDialog}>削除</Button>
+            <Button className="w-full m-2 bg-black text-white rounded-lg" disabled onClick={toggleHideDialog}>コピ-新規</Button>
             <Button className="w-full m-2 bg-black text-white rounded-lg" onClick={toggleHideDialog} >キャンセル</Button>
             <Button className="w-full m-2 bg-black text-white rounded-lg" onClick={saveDialog} >保存</Button>
           </div>
