@@ -34,8 +34,8 @@ const recognizeFileEnabled: boolean =
 
 const routes: RouteObject[] = [
   {
-    path: '/rag',
-    element: <RagPage />,
+    path: '/',
+    element: <ChatPage />,
   },
   {
     path: '/setting',
@@ -113,7 +113,7 @@ const routes: RouteObject[] = [
 
 const router = createBrowserRouter([
   {
-    path: '/rag',
+    path: '/',
     element: samlAuthEnabled ? <AuthWithSAML /> : <AuthWithUserpool />,
     children: routes,
   },
