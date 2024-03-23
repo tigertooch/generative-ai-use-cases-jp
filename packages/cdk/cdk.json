@@ -25,7 +25,7 @@
     "samlAuthEnabled": false,
     "samlCognitoDomainName": "",
     "samlCognitoFederatedIdentityProviderName": "",
-    "modelRegion": "ap-northeast-1",
+    "modelRegion": "us-east-1",
     "modelIds": [
       "anthropic.claude-v2"
     ],
@@ -33,9 +33,9 @@
       "stability.stable-diffusion-xl-v0"
     ],
     "endpointNames": [],
-    "agentEnabled": true,
-    "agentRegion": "ap-northeast-1",
-    "searchAgentEnabled": true,
+    "agentEnabled": false,
+    "agentRegion": "us-east-1",
+    "searchAgentEnabled": false,
     "searchApiKey": "",
     "agents": [],
     "allowedIpV4AddressRanges": null,
