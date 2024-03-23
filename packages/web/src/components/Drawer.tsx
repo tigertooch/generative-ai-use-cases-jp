@@ -5,10 +5,10 @@ import { Auth } from 'aws-amplify';
 import useSWR from 'swr';
 import useDrawer from '../hooks/useDrawer';
 import useVersion from '../hooks/useVersion';
-import IconWithDot from './IconWithDot';
+// import IconWithDot from './IconWithDot';
 import {
   // PiGithubLogo,
-  PiGear,
+  // PiGear,
   // PiBookOpen,
   PiMagnifyingGlass,
 } from 'react-icons/pi';
@@ -125,7 +125,7 @@ const Drawer: React.FC<Props> = (props) => {
   return (
     <>
       <nav
-        className={`custom-gray bg-aws-squid-ink border-r flex w-64 flex-col justify-between text-sm text-black  print:hidden`} >
+        className={`custom-gray bg-aws-squid-ink border-r flex w-64 flex-col justify-between text-sm text-black  print:hidden`} style={{height: 'calc(100vh - 2.5rem)'}}>
         {/* <div className="text-gray-400 mx-3 my-2 text-xs">
           ユースケース 
         </div> */}
@@ -136,6 +136,24 @@ const Drawer: React.FC<Props> = (props) => {
             </svg>&nbsp;New Chat
           </Button>
         </div>
+        <ExpandableMenu title="会話履歴" className="mx-3 my-2 text-xs">
+          <div className="relative mb-2 ml-2 mr-1 w-full pl-1.5 pr-7 pt-1">
+            <input
+              style={{color: '#000'}}
+              className="bg-aws-squid-ink h-7 w-full rounded-full border border-white pl-8 text-sm text-white focus:border-white focus:ring-0"
+              type="text"
+              value={searchQuery}
+              placeholder="件名で検索"
+              onChange={(event) => {
+                setSearchQuery(event.target.value ?? '');
+              }}
+            />
+            <PiMagnifyingGlass className="bg-aws-squid-ink absolute left-1.5 top-1 size-7 rounded-l-full border border-white p-1.5" />
+          </div>
+          <div className="scrollbar-thin scrollbar-thumb-white ml-2 mr-1 h-full overflow-y-auto">
+            <ChatList className="mr-1" searchWords={searchWords} />
+          </div>
+        </ExpandableMenu>
         <div className="scrollbar-thin scrollbar-thumb-white ml-2 mr-1 h-full overflow-y-auto">
           {usecases.map((item, idx) => (
             <Item
@@ -171,23 +189,7 @@ const Drawer: React.FC<Props> = (props) => {
             <div className="border-b" />
           </>
         )}
-        <ExpandableMenu title="会話履歴" className="mx-3 my-2 text-xs">
-          <div className="relative mb-2 ml-2 mr-1 w-full pl-1.5 pr-7 pt-1">
-            <input
-              className="bg-aws-squid-ink h-7 w-full rounded-full border border-white pl-8 text-sm text-white focus:border-white focus:ring-0"
-              type="text"
-              value={searchQuery}
-              placeholder="件名で検索"
-              onChange={(event) => {
-                setSearchQuery(event.target.value ?? '');
-              }}
-            />
-            <PiMagnifyingGlass className="bg-aws-squid-ink absolute left-1.5 top-1 size-7 rounded-l-full border border-white p-1.5" />
-          </div>
-          <div className="scrollbar-thin scrollbar-thumb-white ml-2 mr-1 h-full overflow-y-auto">
-            <ChatList className="mr-1" searchWords={searchWords} />
-          </div>
-        </ExpandableMenu>
+        
         {/* <div className="border-b" />
         <ExpandableMenu
           title="リンク"
@@ -211,7 +213,7 @@ const Drawer: React.FC<Props> = (props) => {
             />
           </div>
         </ExpandableMenu> */}
-        <div className="flex items-center justify-between border-t border-gray-400 px-3 py-2">
+        {/* <div className="flex items-center justify-between border-t border-gray-400 px-3 py-2">
           <Link
             to="/setting"
             className="mr-2 overflow-x-hidden hover:brightness-75">
@@ -222,7 +224,7 @@ const Drawer: React.FC<Props> = (props) => {
               <PiGear className="text-lg" />
             </IconWithDot>
           </Link>
-        </div>
+        </div> */}
       </nav>
     </>
   );

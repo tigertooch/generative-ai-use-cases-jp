@@ -1,7 +1,7 @@
 [data-amplify-authenticator]::before {
     content: '';
     display: block;
-    height: 80px;
+    height: 2.5rem;
     background-color: black;
     width: 100%; 
     margin: 0 auto ;
