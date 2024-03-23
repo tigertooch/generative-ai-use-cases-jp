@@ -15,7 +15,7 @@ import {
   // PiGear,
   // PiGlobe,
   PiX,
-  PiGear,
+  // PiGear,
   // PiRobot,
   // PiUploadSimple,
 } from 'react-icons/pi';
@@ -36,16 +36,16 @@ import IconWithDot from './components/IconWithDot';
 import useSWR from 'swr';
 import { Auth } from 'aws-amplify';
 
-// const ragEnabled: boolean = import.meta.env.VITE_APP_RAG_ENABLED === 'true';
-// const agentEnabled: boolean = import.meta.env.VITE_APP_AGENT_ENABLED === 'true';
-// const recognizeFileEnabled: boolean =
-//   import.meta.env.VITE_APP_RECOGNIZE_FILE_ENABLED === 'true';
- 
+const ragEnabled: boolean = import.meta.env.VITE_APP_RAG_ENABLED === 'true';
+//const agentEnabled: boolean = import.meta.env.VITE_APP_AGENT_ENABLED === 'true';
+//const recognizeFileEnabled: boolean =
+//  import.meta.env.VITE_APP_RECOGNIZE_FILE_ENABLED === 'true';
+
 const items: ItemProps[] = [
-  // {
+ // {
   //   label: 'ホーム',
   //   to: '/',
-  //   icon: <PiChatCircleText />,
+  //   icon: <PiHouse />,
   //   display: 'usecase' as const,
   //   name:'home',
   // },
@@ -62,14 +62,17 @@ const items: ItemProps[] = [
   //   display: 'usecase' as const,
   //   name:'chat',
   // },
-  {
-    label: 'RAG チャット',
-    to: '/rag',
-    icon: <PiChatCircleText />,
-    display: 'usecase' as const,
-    name:'ragchat',
-  },
-  // agentEnabled
+
+  ragEnabled
+    ? {
+        label: 'RAG チャット',
+        to: '/rag',
+        icon: <PiChatCircleText />,
+        display: 'usecase' as const,
+        name:'rag',
+      }
+    : null,
+ // agentEnabled
   //   ? {
   //       label: 'Agent チャット',
   //       to: '/agent',
@@ -177,15 +180,7 @@ const App: React.FC = () => {
 
 
   const appStateContext = useContext(AppStateContext)
-   // 处理点击事件的函数
-  //  const handleItemClick = (item) => {
-  //   // 假设 item 有一个属性可以用来判断是否为聊天页面，比如 id 或 name
-  //   if (item.name === 'chat') {
-  //     setIsOpenChat(true);
-  //   } else {
-  //     setIsOpenChat(false);
-  //   }
-  // };
+
   useEffect(() => {
     const messages = JSON.parse(localStorage.getItem("newSugguestionItems") || '[]');
     setSugguestionItems(messages);
@@ -208,8 +203,8 @@ const App: React.FC = () => {
           <div className="flex text-white items-center justify-end border-t border-gray-400 px-3 py-2">
             <Link to="/setting" className='px-3'>
               <IconWithDot showDot={hasUpdate}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5 ">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 ">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                 </svg>
               </IconWithDot>
             </Link>

@@ -10,9 +10,9 @@ const selfSignUpEnabled: boolean =
 const AuthWithUserpool: React.FC = () => {
   Amplify.configure({
     Auth: {
-      userPoolId: "ap-northeast-1_vCrTTUOB9",
-      userPoolWebClientId: "4dsgb871gcfp4sp1tlrlnj018o",
-      identityPoolId: "ap-northeast-1:e3d205a6-032f-4bf8-a9e1-c75a11961884",
+      userPoolId: import.meta.env.VITE_APP_USER_POOL_ID,
+      userPoolWebClientId: import.meta.env.VITE_APP_USER_POOL_CLIENT_ID,
+      identityPoolId: import.meta.env.VITE_APP_IDENTITY_POOL_ID,
       authenticationFlowType: 'USER_SRP_AUTH',
     },
   });

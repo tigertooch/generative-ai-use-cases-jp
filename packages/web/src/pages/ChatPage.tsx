@@ -13,7 +13,7 @@ import ExpandableField from '../components/ExpandableField';
 import useScroll from '../hooks/useScroll';
 import { PiArrowClockwiseBold, PiShareFatFill } from 'react-icons/pi';
 import { create } from 'zustand';
-import { ReactComponent as BedrockIcon } from '../assets/bedrock.svg';
+// import { ReactComponent as BedrockIcon } from '../assets/bedrock.svg';
 import { ChatPageLocationState } from '../@types/navigate';
 import { SelectField } from '@aws-amplify/ui-react';
 import { MODELS } from '../hooks/useModel';
