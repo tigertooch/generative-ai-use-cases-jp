@@ -1,5 +1,5 @@
 import React, { useMemo ,useState,useContext,useEffect} from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   PiList,
   // PiHouse,
@@ -15,6 +15,7 @@ import {
   // PiGear,
   // PiGlobe,
   PiX,
+  PiGear,
   // PiRobot,
   // PiUploadSimple,
 } from 'react-icons/pi';
@@ -23,6 +24,7 @@ import Drawer, { ItemProps } from './components/Drawer';
 import ButtonIcon from './components/ButtonIcon';
 import '@aws-amplify/ui-react/styles.css';
 import useDrawer from './hooks/useDrawer';
+import useVersion from './hooks/useVersion';
 import useConversation from './hooks/useConversation';
 import PopupInterUseCasesDemo from './components/PopupInterUseCasesDemo';
 import useInterUseCases from './hooks/useInterUseCases';
@@ -30,6 +32,9 @@ import {SuggestionPanel} from './components/SuggestionPanel';
 import {NewSuggestionItemPanel} from './components/NewSuggestionItemPanel';
 import {AppStateContext } from "./state/AppProvider";
 import {SugguestionItem } from './hooks/useModel';
+import IconWithDot from './components/IconWithDot';
+import useSWR from 'swr';
+import { Auth } from 'aws-amplify';
 
 // const ragEnabled: boolean = import.meta.env.VITE_APP_RAG_ENABLED === 'true';
 // const agentEnabled: boolean = import.meta.env.VITE_APP_AGENT_ENABLED === 'true';
@@ -40,7 +45,7 @@ const items: ItemProps[] = [
   // {
   //   label: 'ホーム',
   //   to: '/',
-  //   icon: <PiHouse />,
+  //   icon: <PiChatCircleText />,
   //   display: 'usecase' as const,
   //   name:'home',
   // },
@@ -142,6 +147,19 @@ const extractChatId = (path: string): string | null => {
 };
 
 const App: React.FC = () => {
+  const { getHasUpdate } = useVersion();
+
+  // 第一引数は不要だが、ないとリクエストされないため 'user' 文字列を入れる
+  const { data } = useSWR('user', async () => {
+    return await Auth.currentAuthenticatedUser();
+  });
+
+  const email = useMemo(() => {
+    return data?.signInUserSession?.idToken?.payload?.email ?? '';
+  }, [data]);
+
+  const hasUpdate = getHasUpdate();
+
   const { switchOpen: switchDrawer, opened: isOpenDrawer } = useDrawer();
   const { pathname } = useLocation();
   const { getConversationTitle } = useConversation();
@@ -177,6 +195,7 @@ const App: React.FC = () => {
   const [sugguestionItems, setSugguestionItems] = useState<SugguestionItem[]>([]);
 
   const onSave = (sugguestionItem: SugguestionItem) => {
+
     const newSugguestionItems = [...sugguestionItems, sugguestionItem];
     setSugguestionItems(newSugguestionItems);
     localStorage.setItem('newSugguestionItems', JSON.stringify(newSugguestionItems));
@@ -185,7 +204,22 @@ const App: React.FC = () => {
   return (
     <div className="screen:w-screen screen:h-screen overflow-x-hidden">
       <main className="flex-1">
-        <div className='bg-aws-smile h-20 rounded-lg'>asddddddddddddddddddddd</div>
+        <div className='bg-aws-smile h-10 rounded-lg'>
+          <div className="flex text-white items-center justify-end border-t border-gray-400 px-3 py-2">
+            <Link to="/setting" className='px-3'>
+              <IconWithDot showDot={hasUpdate}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5 ">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                </svg>
+              </IconWithDot>
+            </Link>
+            <Link
+              to="/setting"
+              className="mr-2 overflow-x-hidden hover:brightness-75">
+              <span className="text-sm">{email}</span>
+            </Link>
+          </div>
+        </div>
         <header className="bg-aws-squid-ink visible flex h-12 w-full items-center justify-between text-lg text-white lg:invisible lg:h-0 print:hidden">
           <div className="flex w-10 items-center justify-start">
             <button
@@ -202,7 +236,7 @@ const App: React.FC = () => {
         </header>
 
         <div
-          className={`fixed -left-64 top-20 z-50 transition-all lg:left-0 lg:z-0 ${isOpenDrawer ? 'left-0' : '-left-64'}`}>
+          className={`fixed -left-64 top-10 z-50 transition-all lg:left-0 lg:z-0 ${isOpenDrawer ? 'left-0' : '-left-64'}`}>
           <Drawer items={items} />
         </div>
         <SuggestionPanel sugguestionItems={sugguestionItems}/>

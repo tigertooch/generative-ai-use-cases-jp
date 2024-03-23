@@ -45,7 +45,7 @@ export const SuggestionPanel: React.FC<Props>= (props) => {
   }, [props, navigate]);
 
   return (
-    <nav className={`top-20 z-50 transition-all fixed -right-64 bg-aws-squid-ink lg:right-0 lg:z-0 flex w-64 flex-col text-sm text-black print:hidden ${isOpenDrawer ? 'right-0' : '-right-64'}`}>
+    <nav className={`top-10 z-50 transition-all fixed -right-64 bg-aws-squid-ink lg:right-0 lg:z-0 flex w-64 flex-col text-sm text-black print:hidden ${isOpenDrawer ? 'right-0' : '-right-64'}`} style={{height: 'calc(100vh - 2.5rem)'}}>
       <div className='flex justify-center p-2'>
         <Button className="w-11/12" onClick={addNewSuggestionItem}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="fill-current w-5 h-5">
