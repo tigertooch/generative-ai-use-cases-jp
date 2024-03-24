@@ -172,13 +172,14 @@ export const batchCreatePrompts = async (
         type: p.type,
         updatedDate:`${createdDate + i}#0`,
         userId:userId,
+        talebName:'prompt'
       };
     }
   );
   await dynamoDbDocument.send(
     new BatchWriteCommand({
       RequestItems: {
-        ['Prompt']: items.map((m) => {
+        [TABLE_NAME]: items.map((m) => {
           return {
             PutRequest: {
               Item: m,
@@ -198,7 +199,7 @@ export const updatePrompt = async (
 ): Promise<RecordedPrompt> => {
   const res = await dynamoDbDocument.send(
     new UpdateCommand({
-      TableName: 'Prompt',
+      TableName: TABLE_NAME,
       Key: {
         id: id,
         createdDate,
@@ -219,13 +220,16 @@ export const listPrompts = async (
   const userId =  `user#${_userId}`;
   const res = await dynamoDbDocument.send(
     new QueryCommand({
-      TableName: 'Prompt',
+      TableName: TABLE_NAME,
       KeyConditionExpression: '#userId = :userId',
+      FilterExpression: '#talebName = :talebName',
       ExpressionAttributeNames: {
         '#userId': 'userId',
+        '#talebName': 'talebName',
       },
       ExpressionAttributeValues: {
         ':userId': userId,
+        ':talebName': 'prompt',
       },
     })
   );

@@ -215,7 +215,7 @@ export class Api extends Construct {
       entry: './lambda/createPrompts.ts',
       timeout: Duration.minutes(15),
       environment: {
-        TABLE_NAME: 'Prompt',
+        TABLE_NAME: table.tableName,
       },
     });
     table.grantWriteData(createPromptsFunction);
@@ -225,7 +225,7 @@ export class Api extends Construct {
         entry: './lambda/updatePrompt.ts',
         timeout: Duration.minutes(15),
         environment: {
-          TABLE_NAME: 'Prompt',
+          TABLE_NAME: table.tableName,
         },
       }
     );
@@ -236,7 +236,7 @@ export class Api extends Construct {
       entry: './lambda/listPrompts.ts',
       timeout: Duration.minutes(15),
       environment: {
-        TABLE_NAME: 'Prompt',
+        TABLE_NAME: table.tableName,
       },
     });
     table.grantReadData(listPromptsFunction);
