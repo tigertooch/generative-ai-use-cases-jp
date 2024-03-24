@@ -96,7 +96,7 @@ const RagPage: React.FC = () => {
           </SelectField>
         </div>
 
-        {isEmpty && (
+        {/* {isEmpty && (
           <div className="relative flex h-[calc(100vh-9rem)] flex-col items-center justify-center">
             <div className="flex items-center gap-x-3">
               <KendraIcon className="size-[64px] fill-gray-400" />
@@ -104,9 +104,9 @@ const RagPage: React.FC = () => {
               <BedrockIcon className="fill-gray-400" />
             </div>
           </div>
-        )}
+        )} */}
 
-        {isEmpty && (
+        {/* {isEmpty && (
           <div
             className={`absolute inset-x-0 top-28 m-auto flex justify-center`}>
             <Alert severity="info">
@@ -128,7 +128,7 @@ const RagPage: React.FC = () => {
               </div>
             </Alert>
           </div>
-        )}
+        )} */}
 
         {messages.map((chat, idx) => (
           <div key={idx}>
