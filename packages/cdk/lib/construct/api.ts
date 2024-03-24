@@ -450,15 +450,15 @@ export class Api extends Construct {
       new LambdaIntegration(createPromptsFunction),
       commonAuthorizerProps
     );
-    const promptResource = promptsResource.addResource('prompt');
-    // POST: /chats/prompts/prompt
+    const promptResource = chatsResource.addResource('prompt');
+    // POST: /chats/prompt
     promptResource.addMethod(
       'POST',
       new LambdaIntegration(updatePromptFunction),
       commonAuthorizerProps
     );
-    const listpromptResource = promptsResource.addResource('listprompts');
-    // GET: /chats/prompts/listprompts
+    const listpromptResource = chatsResource.addResource('listprompts');
+    // GET: /chats/listprompts
     listpromptResource.addMethod(
       'GET',
       new LambdaIntegration(listPromptsFunction),
