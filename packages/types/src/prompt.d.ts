@@ -11,6 +11,7 @@ export type PromptTemplate = {
 };
 
 export type PromptAttributes = {
+  uuid:string;
   title: string;
   content: string;
   type: string;
@@ -28,6 +29,6 @@ export type ToBeRecordedPrompt =  {
 };
 
 export type UpdatePromptRequest = {
-  createdDate: string;
+  uuid: string;
   content: string;
 };

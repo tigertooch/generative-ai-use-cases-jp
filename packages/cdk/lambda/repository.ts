@@ -165,7 +165,8 @@ export const batchCreatePrompts = async (
   const items: RecordedPrompt[] = prompts.map(
     (p: ToBeRecordedPrompt, i: number) => {
       return {
-        id: uuidv4(),
+        id: userId,
+        uuid:uuidv4(),
         createdDate: `${createdDate + i}#0`,
         title: p.title,
         content: p.content,
@@ -193,20 +194,23 @@ export const batchCreatePrompts = async (
 };
 
 export const updatePrompt = async (
-  id: string,
-  createdDate: string,
-  content: string
+  _userId: string,
+  uuid: string,
+  content: string,
 ): Promise<RecordedPrompt> => {
+  const userId = `user#${_userId}`;
+  const updatedDated = Date.now();
   const res = await dynamoDbDocument.send(
     new UpdateCommand({
       TableName: TABLE_NAME,
       Key: {
-        id: id,
-        createdDate,
+        id: userId,
+        uuid:uuid,
       },
-      UpdateExpression: 'set content = :content',
+      UpdateExpression: 'set content = :content, updatedDate = :updatedDate',
       ExpressionAttributeValues: {
         ':content': content,
+        ':updatedDate': `${updatedDated + 0}#0`,
       },
       ReturnValues: 'ALL_NEW',
     })
@@ -221,14 +225,14 @@ export const listPrompts = async (
   const res = await dynamoDbDocument.send(
     new QueryCommand({
       TableName: TABLE_NAME,
-      KeyConditionExpression: '#userId = :userId',
+      KeyConditionExpression: '#id = :id',
       FilterExpression: '#talebName = :talebName',
       ExpressionAttributeNames: {
-        '#userId': 'userId',
+        '#id': 'id',
         '#talebName': 'talebName',
       },
       ExpressionAttributeValues: {
-        ':userId': userId,
+        ':id': userId,
         ':talebName': 'prompt',
       },
     })
