@@ -160,7 +160,7 @@ export const batchCreatePrompts = async (
   prompts: ToBeRecordedPrompt[],
   _userId: string,
 ): Promise<RecordedPrompt[]> => {
-  const userId = `user#${_userId}`;
+  const userId = `prompt#${_userId}`;
   const createdDate = Date.now();
   const items: RecordedPrompt[] = prompts.map(
     (p: ToBeRecordedPrompt, i: number) => {
@@ -198,7 +198,7 @@ export const updatePrompt = async (
   uuid: string,
   content: string,
 ): Promise<RecordedPrompt> => {
-  const userId = `user#${_userId}`;
+  const userId = `prompt#${_userId}`;
   const updatedDated = Date.now();
   const res = await dynamoDbDocument.send(
     new UpdateCommand({
@@ -221,7 +221,7 @@ export const updatePrompt = async (
 export const listPrompts = async (
   _userId: string
 ): Promise<RecordedPrompt[]> => {
-  const userId =  `user#${_userId}`;
+  const userId =  `prompt#${_userId}`;
   const res = await dynamoDbDocument.send(
     new QueryCommand({
       TableName: TABLE_NAME,
