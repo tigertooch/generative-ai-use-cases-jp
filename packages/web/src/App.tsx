@@ -36,6 +36,14 @@ import IconWithDot from './components/IconWithDot';
 import useSWR from 'swr';
 import { Auth } from 'aws-amplify';
 
+import useChatApi from './hooks/useChatApi';
+
+import {
+  CreatePromptsRequest,
+  ToBeRecordedPrompt,
+  RecordedPrompt,
+} from 'generative-ai-use-cases-jp';
+
 const ragEnabled: boolean = import.meta.env.VITE_APP_RAG_ENABLED === 'true';
 //const agentEnabled: boolean = import.meta.env.VITE_APP_AGENT_ENABLED === 'true';
 //const recognizeFileEnabled: boolean =
@@ -151,6 +159,10 @@ const extractChatId = (path: string): string | null => {
 
 const App: React.FC = () => {
   const { getHasUpdate } = useVersion();
+  const { createPrompts} =  useChatApi();
+
+  
+
 
   // 第一引数は不要だが、ないとリクエストされないため 'user' 文字列を入れる
   const { data } = useSWR('user', async () => {
@@ -189,10 +201,19 @@ const App: React.FC = () => {
 
   const [sugguestionItems, setSugguestionItems] = useState<SugguestionItem[]>([]);
 
-  const onSave = (sugguestionItem: SugguestionItem) => {
-
+  const onSave =async (sugguestionItem: SugguestionItem) => {
+    
     const newSugguestionItems = [...sugguestionItems, sugguestionItem];
     setSugguestionItems(newSugguestionItems);
+    const prompts: ToBeRecordedPrompt[] = [
+      {
+        title: sugguestionItem.title,
+        content: sugguestionItem.content,
+        type: "sugguestionItem."
+      }
+    ];
+  const requestprompt: CreatePromptsRequest = {prompts};
+  await createPrompts(requestprompt);
     localStorage.setItem('newSugguestionItems', JSON.stringify(newSugguestionItems));
   };
 
