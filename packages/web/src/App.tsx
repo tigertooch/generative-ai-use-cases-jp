@@ -41,7 +41,6 @@ import useChatApi from './hooks/useChatApi';
 import {
   CreatePromptsRequest,
   ToBeRecordedPrompt,
-  RecordedPrompt,
 } from 'generative-ai-use-cases-jp';
 
 const ragEnabled: boolean = import.meta.env.VITE_APP_RAG_ENABLED === 'true';
