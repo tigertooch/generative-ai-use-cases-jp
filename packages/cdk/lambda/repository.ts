@@ -173,7 +173,7 @@ export const batchCreatePrompts = async (
         type: p.type,
         updatedDate:`${createdDate + i}#0`,
         userId:userId,
-        talebName:'prompt'
+        tableName:'prompt'
       };
     }
   );
@@ -226,14 +226,14 @@ export const listPrompts = async (
     new QueryCommand({
       TableName: TABLE_NAME,
       KeyConditionExpression: '#id = :id',
-      FilterExpression: '#talebName = :talebName',
+      FilterExpression: '#tableName = :tableName',
       ExpressionAttributeNames: {
         '#id': 'id',
-        '#talebName': 'talebName',
+        '#tableName': 'tableName',
       },
       ExpressionAttributeValues: {
         ':id': userId,
-        ':talebName': 'prompt',
+        ':tableName': 'prompt',
       },
     })
   );
