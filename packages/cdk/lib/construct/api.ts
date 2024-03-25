@@ -20,6 +20,7 @@ export interface BackendApiProps {
   userPool: UserPool;
   idPool: IdentityPool;
   table: Table;
+  table2:Table;
 }
 
 export class Api extends Construct {
@@ -34,7 +35,7 @@ export class Api extends Construct {
   constructor(scope: Construct, id: string, props: BackendApiProps) {
     super(scope, id);
 
-    const { userPool, table, idPool } = props;
+    const { userPool, table,table2, idPool } = props;
 
     // region for bedrock / sagemaker
     const modelRegion = this.node.tryGetContext('modelRegion') || 'us-east-1';
@@ -215,31 +216,31 @@ export class Api extends Construct {
       entry: './lambda/createPrompts.ts',
       timeout: Duration.minutes(15),
       environment: {
-        TABLE_NAME: table.tableName,
+        TABLE_NAME: table2.tableName,
       },
     });
-    table.grantWriteData(createPromptsFunction);
+    table2.grantWriteData(createPromptsFunction);
 
     const updatePromptFunction = new NodejsFunction(this,'UpdatePrompt', {
         runtime: Runtime.NODEJS_18_X,
         entry: './lambda/updatePrompt.ts',
         timeout: Duration.minutes(15),
         environment: {
-          TABLE_NAME: table.tableName,
+          TABLE_NAME: table2.tableName,
         },
       }
     );
-    table.grantReadWriteData(updatePromptFunction);
+    table2.grantReadWriteData(updatePromptFunction);
 
     const listPromptsFunction = new NodejsFunction(this, 'ListPrompts', {
       runtime: Runtime.NODEJS_18_X,
       entry: './lambda/listPrompts.ts',
       timeout: Duration.minutes(15),
       environment: {
-        TABLE_NAME: table.tableName,
+        TABLE_NAME: table2.tableName,
       },
     });
-    table.grantReadData(listPromptsFunction);
+    table2.grantReadData(listPromptsFunction);
 
 
     const updateChatTitleFunction = new NodejsFunction(
