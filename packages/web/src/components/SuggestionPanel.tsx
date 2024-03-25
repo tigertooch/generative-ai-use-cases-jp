@@ -14,16 +14,16 @@ type Props = BaseProps & {
 export const SuggestionPanel: React.FC<Props>= (props) => {
   const {opened: isOpenDrawer } = useDrawer();
   const appStateContext = useContext(AppStateContext)
-  const [expandedId, setExpandedId] = useState(0);
+  const [expandedId, setExpandedId] = useState("");
 
   const addNewSuggestionItem = () => {
     appStateContext?.dispatch({ type: 'TOGGLE_CHAT_NEW_SUGGESTION' })
   };
 
-  const showPrompt = (event:React.MouseEvent, id:number) => {
+  const showPrompt = (event:React.MouseEvent, id:string) => {
     event.preventDefault(); // 防止默认行为，根据需要添加
     if (expandedId === id) {
-      setExpandedId(0)
+      setExpandedId("")
       return
     }
     setExpandedId(id);

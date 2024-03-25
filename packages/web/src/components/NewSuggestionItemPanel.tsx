@@ -25,7 +25,7 @@ export const NewSuggestionItemPanel: React.FunctionComponent<NewSuggestionItemPa
     const saveDialog = () => {
       if (title.trim() !== '' && content.trim() !== '') {
         const newItem: SugguestionItem = {
-            id: Date.now(), // 使用时间戳作为唯一ID
+            id: `${Date.now()}`, // 使用时间戳作为唯一ID
             title: title,
             content: content,
             use: use
