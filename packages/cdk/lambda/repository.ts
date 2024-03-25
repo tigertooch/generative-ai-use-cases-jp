@@ -180,7 +180,7 @@ export const batchCreatePrompts = async (
   await dynamoDbDocument.send(
     new BatchWriteCommand({
       RequestItems: {
-        [TABLE_NAME]: items.map((m) => {
+        ['Prompt-F104A135-1TV528UPTJP43']: items.map((m) => {
           return {
             PutRequest: {
               Item: m,
@@ -202,7 +202,7 @@ export const updatePrompt = async (
   const updatedDated = Date.now();
   const res = await dynamoDbDocument.send(
     new UpdateCommand({
-      TableName: TABLE_NAME,
+      TableName: 'Prompt-F104A135-1TV528UPTJP43',
       Key: {
         id: userId,
         uuid:uuid,
@@ -224,7 +224,7 @@ export const listPrompts = async (
   const userId =  `prompt#${_userId}`;
   const res = await dynamoDbDocument.send(
     new QueryCommand({
-      TableName: TABLE_NAME,
+      TableName: 'Prompt-F104A135-1TV528UPTJP43',
       KeyConditionExpression: '#id = :id',
       FilterExpression: '#tableName = :tableName',
       ExpressionAttributeNames: {
