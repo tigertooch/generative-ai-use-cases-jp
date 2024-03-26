@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { useState ,useContext} from 'react';
 import { Dialog, DialogType} from '@fluentui/react';
-import {SugguestionItem } from '../hooks/useModel';
 import { AppStateContext } from "../state/AppProvider";
 import { Radio, RadioGroupField, TextAreaField, TextField } from '@aws-amplify/ui-react';
 import style from './NewSuggestionItemPanel.module.css'
 import Button from './Button';
-
+import {
+  RecordedPrompt,
+} from 'generative-ai-use-cases-jp';
 export interface NewSuggestionItemPanelProps {
-  onSave: (newItem: SugguestionItem) => void;
+  onSave: (newItem: RecordedPrompt) => void;
 }
 
 const dialogContentProps = {
@@ -24,13 +25,17 @@ export const NewSuggestionItemPanel: React.FunctionComponent<NewSuggestionItemPa
   const [use, setUse] = useState('1');
     const saveDialog = () => {
       if (title.trim() !== '' && content.trim() !== '') {
-        const newItem: SugguestionItem = {
-            id: `${Date.now()}`, // 使用时间戳作为唯一ID
-            title: title,
-            content: content,
-            use: use
+        const recordedPrompt: RecordedPrompt = {
+            id:'',
+            createdDate:'',
+            uuid:'',
+            title: title.trim(),
+            content: content.trim(),
+            type: '',
+            userId: '',
+            updatedDate: '',
           };
-        onSave(newItem);
+        onSave(recordedPrompt);
         toggleHideDialog();
         }else{
           alert('Title and content cannot be empty.');
