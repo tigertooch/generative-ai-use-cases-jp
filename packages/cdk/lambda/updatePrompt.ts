@@ -6,12 +6,10 @@ export const handler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
-    const id = event.pathParameters!.id!;
     const userId: string =
       event.requestContext.authorizer!.claims['cognito:username'];
     const req: UpdatePromptRequest = JSON.parse(event.body!);
-
-    const prompt = await updatePrompt(userId,id, req.content);
+    const prompt = await updatePrompt(userId,req.uuid, req.content);
     return {
       statusCode: 200,
       headers: {
