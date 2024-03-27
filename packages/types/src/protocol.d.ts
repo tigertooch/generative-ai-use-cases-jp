@@ -46,7 +46,7 @@ export type ListPromptsResponse = {
 };
 
 export type UpdatePromptRequest = {
-  createdDate: string;
+  uuid: string;
   content: string;
 };
 

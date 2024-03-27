@@ -160,25 +160,27 @@ export const batchCreatePrompts = async (
   prompts: ToBeRecordedPrompt[],
   _userId: string,
 ): Promise<RecordedPrompt[]> => {
-  const userId = `user#${_userId}`;
+  const userId = `prompt#${_userId}`;
   const createdDate = Date.now();
   const items: RecordedPrompt[] = prompts.map(
     (p: ToBeRecordedPrompt, i: number) => {
       return {
-        id: uuidv4(),
+        id: userId,
+        uuid:uuidv4(),
         createdDate: `${createdDate + i}#0`,
         title: p.title,
         content: p.content,
         type: p.type,
         updatedDate:`${createdDate + i}#0`,
         userId:userId,
+        tableName:'prompt'
       };
     }
   );
   await dynamoDbDocument.send(
     new BatchWriteCommand({
       RequestItems: {
-        ['Prompt']: items.map((m) => {
+        ['Prompt-F104A135-1TV528UPTJP43']: items.map((m) => {
           return {
             PutRequest: {
               Item: m,
@@ -192,20 +194,23 @@ export const batchCreatePrompts = async (
 };
 
 export const updatePrompt = async (
-  id: string,
-  createdDate: string,
-  content: string
+  _userId: string,
+  uuid: string,
+  content: string,
 ): Promise<RecordedPrompt> => {
+  const userId = `prompt#${_userId}`;
+  const updatedDated = Date.now();
   const res = await dynamoDbDocument.send(
     new UpdateCommand({
-      TableName: 'Prompt',
+      TableName: 'Prompt-F104A135-1TV528UPTJP43',
       Key: {
-        id: id,
-        createdDate,
+        id: userId,
+        uuid:uuid,
       },
-      UpdateExpression: 'set content = :content',
+      UpdateExpression: 'set content = :content, updatedDate = :updatedDate',
       ExpressionAttributeValues: {
         ':content': content,
+        ':updatedDate': `${updatedDated + 0}#0`,
       },
       ReturnValues: 'ALL_NEW',
     })
@@ -216,16 +221,19 @@ export const updatePrompt = async (
 export const listPrompts = async (
   _userId: string
 ): Promise<RecordedPrompt[]> => {
-  const userId =  `user#${_userId}`;
+  const userId =  `prompt#${_userId}`;
   const res = await dynamoDbDocument.send(
     new QueryCommand({
-      TableName: 'Prompt',
-      KeyConditionExpression: '#userId = :userId',
+      TableName: 'Prompt-F104A135-1TV528UPTJP43',
+      KeyConditionExpression: '#id = :id',
+      FilterExpression: '#tableName = :tableName',
       ExpressionAttributeNames: {
-        '#userId': 'userId',
+        '#id': 'id',
+        '#tableName': 'tableName',
       },
       ExpressionAttributeValues: {
-        ':userId': userId,
+        ':id': userId,
+        ':tableName': 'prompt',
       },
     })
   );

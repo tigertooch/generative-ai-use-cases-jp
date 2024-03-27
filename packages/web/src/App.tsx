@@ -31,10 +31,16 @@ import useInterUseCases from './hooks/useInterUseCases';
 import {SuggestionPanel} from './components/SuggestionPanel';
 import {NewSuggestionItemPanel} from './components/NewSuggestionItemPanel';
 import {AppStateContext } from "./state/AppProvider";
-import {SugguestionItem } from './hooks/useModel';
 import IconWithDot from './components/IconWithDot';
 import useSWR from 'swr';
 import { Auth } from 'aws-amplify';
+import useChatApi from './hooks/useChatApi';
+
+import {
+  CreatePromptsRequest,
+  ToBeRecordedPrompt,
+  RecordedPrompt,
+} from 'generative-ai-use-cases-jp';
 
 const ragEnabled: boolean = import.meta.env.VITE_APP_RAG_ENABLED === 'true';
 //const agentEnabled: boolean = import.meta.env.VITE_APP_AGENT_ENABLED === 'true';
@@ -151,6 +157,11 @@ const extractChatId = (path: string): string | null => {
 
 const App: React.FC = () => {
   const { getHasUpdate } = useVersion();
+  const { createPrompts} =  useChatApi();
+
+  const { data: prompts, error } = useChatApi().listPrompts(); // 假设useChatApi暴露了listPrompts
+
+  
 
   // 第一引数は不要だが、ないとリクエストされないため 'user' 文字列を入れる
   const { data } = useSWR('user', async () => {
@@ -181,21 +192,30 @@ const App: React.FC = () => {
 
   const appStateContext = useContext(AppStateContext)
 
-  useEffect(() => {
-    const messages = JSON.parse(localStorage.getItem("newSugguestionItems") || '[]');
-    setSugguestionItems(messages);
-  }, []);
+ 
   
 
-  const [sugguestionItems, setSugguestionItems] = useState<SugguestionItem[]>([]);
-
-  const onSave = (sugguestionItem: SugguestionItem) => {
-
-    const newSugguestionItems = [...sugguestionItems, sugguestionItem];
-    setSugguestionItems(newSugguestionItems);
-    localStorage.setItem('newSugguestionItems', JSON.stringify(newSugguestionItems));
+  const [recordedPrompts, setRecordedPrompts] = useState<RecordedPrompt[]>([]);
+  useEffect(() => {
+    if (prompts&&!error){
+      console.log(prompts.prompts);
+      setRecordedPrompts(prompts.prompts);
+    }
+  }, [prompts,error]);
+    const onSave =async (recordedPrompt: RecordedPrompt) => {
+    const newRecordedPrompts = [...recordedPrompts, recordedPrompt];
+    setRecordedPrompts(newRecordedPrompts);
+    const prompts: ToBeRecordedPrompt[] = [
+      {
+        title: recordedPrompt.title,
+        content: recordedPrompt.content,
+        type: "sugguestionItem."
+      }
+    ];
+  const requestprompt: CreatePromptsRequest = {prompts};
+  await createPrompts(requestprompt);
   };
-
+ 
   return (
     <div className="screen:w-screen screen:h-screen overflow-x-hidden">
       <main className="flex-1">
@@ -234,7 +254,7 @@ const App: React.FC = () => {
           className={`fixed -left-64 top-10 z-50 transition-all lg:left-0 lg:z-0 ${isOpenDrawer ? 'left-0' : '-left-64'}`}>
           <Drawer items={items} />
         </div>
-        <SuggestionPanel sugguestionItems={sugguestionItems}/>
+        <SuggestionPanel recordedPrompts={recordedPrompts}/>
         {appStateContext?.state.isNewSuggestionOpen && <NewSuggestionItemPanel onSave={onSave}/>}
         <div
           id="smallDrawerFiller"

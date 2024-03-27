@@ -7,10 +7,11 @@ export const handler = async (
 ): Promise<APIGatewayProxyResult> => {
   try {
     const id = event.pathParameters!.id!;
+    const userId: string =
+      event.requestContext.authorizer!.claims['cognito:username'];
     const req: UpdatePromptRequest = JSON.parse(event.body!);
 
-    const prompt = await updatePrompt(id, req.createdDate, req.content);
-
+    const prompt = await updatePrompt(userId,id, req.content);
     return {
       statusCode: 200,
       headers: {

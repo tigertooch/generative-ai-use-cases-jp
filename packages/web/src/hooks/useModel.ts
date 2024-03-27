@@ -57,7 +57,7 @@ export interface ListSuggestionItems {
   sugguestionItems: SugguestionItem[];
 }
 export interface SugguestionItem {
-  id: number;
+  id: string;
   title: string;
   content: string;
   use: string;

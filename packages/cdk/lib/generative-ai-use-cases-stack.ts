@@ -5,6 +5,7 @@ import {
   Api,
   Web,
   Database,
+  Database2,
   Rag,
   Transcribe,
   CommonWebAcl,
@@ -79,10 +80,12 @@ export class GenerativeAiUseCasesStack extends Stack {
       samlAuthEnabled,
     });
     const database = new Database(this, 'Database');
+    const database2 = new Database2(this, 'Database2');
     const api = new Api(this, 'API', {
       userPool: auth.userPool,
       idPool: auth.idPool,
       table: database.table,
+      table2:database2.table,
     });
 
     if (

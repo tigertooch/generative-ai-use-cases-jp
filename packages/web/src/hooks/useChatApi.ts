@@ -59,12 +59,12 @@ const useChatApi = () => {
       return res.data;
     },
     listPrompts: () => {
-      return http.get<ListPromptsResponse>( `chats/prompts/listprompts`);
+      return http.get<ListPromptsResponse>( `chats/listprompts`);
     },
     updatePrompt: async (
       req: UpdatePromptRequest
     ): Promise<UpdatePromptResponse> => {
-      const res = await http.post(`chats/prompts/prompt`, req);
+      const res = await http.post(`chats/prompt`, req);
       return res.data;
     },
     deleteChat: async (chatId: string) => {
