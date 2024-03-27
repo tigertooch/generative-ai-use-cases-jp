@@ -199,13 +199,12 @@ export const updatePrompt = async (
   content: string,
 ): Promise<RecordedPrompt> => {
   const userId = `prompt#${_userId}`;
-  const updatedDated = Date.now();
+  // const updatedDated = Date.now();
   const res = await dynamoDbDocument.send(
     new UpdateCommand({
       TableName: 'Prompt-F104A135-1TV528UPTJP43',
       Key: {
         id: userId,
-        uuid:uuid,
       },
       UpdateExpression: 'set content = :content',
       ExpressionAttributeValues: {
