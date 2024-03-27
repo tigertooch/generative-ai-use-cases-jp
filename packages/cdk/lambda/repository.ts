@@ -207,10 +207,9 @@ export const updatePrompt = async (
         id: userId,
         uuid:uuid,
       },
-      UpdateExpression: 'set content = :content, updatedDate = :updatedDate',
+      UpdateExpression: 'set content = :content',
       ExpressionAttributeValues: {
         ':content': content,
-        ':updatedDate': `${updatedDated + 0}#0`,
       },
       ReturnValues: 'ALL_NEW',
     })

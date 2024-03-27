@@ -23,7 +23,7 @@ export const handler = async (
     const simplifiedEvent = {
       path: event.path,
       httpMethod: event.httpMethod,
-      body: event.body, // 考虑到安全性，可能需要筛选某些敏感头部信息
+      body: event.body, 
     };
     return {
       statusCode: 500,
@@ -33,7 +33,7 @@ export const handler = async (
       },
       body: JSON.stringify({
         message: 'Internal Server Error',
-        error: { message: 'Internal Server Error'}|| 'Unknown error', // 仅返回错误消息，避免泄露敏感信息
+        error: { message: 'Internal Server Error'}|| 'Unknown error', 
         userId: userId, // 返回userId
         event: simplifiedEvent, // 返回简化后的event信息
       }),
