@@ -207,8 +207,12 @@ export const updatePrompt = async (
         id: userId,
         createdDate:createdDate,
       },
-      UpdateExpression: 'set content = :content',
-      ConditionExpression: 'uuid = :uuid', 
+      UpdateExpression: 'set #content = :content',
+      ConditionExpression: '#uuid = :uuid', 
+      ExpressionAttributeNames: {
+        '#content': 'content',
+        '#uuid': 'uuid',
+      },
       ExpressionAttributeValues: {
         ':content': content,
         ':uuid': uuid,
