@@ -9,7 +9,7 @@ export const handler = async (
     const req: UpdatePromptRequest = JSON.parse(event.body!);
   try {
     
-    const prompt = await updatePrompt(userId,req.uuid, req.content);
+    const prompt = await updatePrompt(userId,req.uuid,req.createdDate, req.content);
     return {
       statusCode: 200,
       headers: {
