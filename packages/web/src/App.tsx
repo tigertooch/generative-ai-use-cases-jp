@@ -30,6 +30,7 @@ import PopupInterUseCasesDemo from './components/PopupInterUseCasesDemo';
 import useInterUseCases from './hooks/useInterUseCases';
 import {SuggestionPanel} from './components/SuggestionPanel';
 import {NewSuggestionItemPanel} from './components/NewSuggestionItemPanel';
+import {UpdateSuggestionItemPanel} from './components/UpdateSuggestionItemPanel';
 import {AppStateContext } from "./state/AppProvider";
 import IconWithDot from './components/IconWithDot';
 import useSWR from 'swr';
@@ -40,6 +41,7 @@ import {
   CreatePromptsRequest,
   ToBeRecordedPrompt,
   RecordedPrompt,
+  UpdatePromptRequest,
 } from 'generative-ai-use-cases-jp';
 
 const ragEnabled: boolean = import.meta.env.VITE_APP_RAG_ENABLED === 'true';
@@ -157,7 +159,7 @@ const extractChatId = (path: string): string | null => {
 
 const App: React.FC = () => {
   const { getHasUpdate } = useVersion();
-  const { createPrompts} =  useChatApi();
+  const { createPrompts,updatePrompt} =  useChatApi();
 
   const { data: prompts, error } = useChatApi().listPrompts(); // 假设useChatApi暴露了listPrompts
 
@@ -192,9 +194,6 @@ const App: React.FC = () => {
 
   const appStateContext = useContext(AppStateContext)
 
- 
-  
-
   const [recordedPrompts, setRecordedPrompts] = useState<RecordedPrompt[]>([]);
   useEffect(() => {
     if (prompts&&!error){
@@ -202,20 +201,55 @@ const App: React.FC = () => {
       setRecordedPrompts(prompts.prompts);
     }
   }, [prompts,error]);
-    const onSave =async (recordedPrompt: RecordedPrompt) => {
-    const newRecordedPrompts = [...recordedPrompts, recordedPrompt];
-    setRecordedPrompts(newRecordedPrompts);
-    const prompts: ToBeRecordedPrompt[] = [
-      {
-        title: recordedPrompt.title,
-        content: recordedPrompt.content,
-        type: "sugguestionItem."
-      }
-    ];
+
+  const onSave =async (recordedPrompt: RecordedPrompt) => {
+  const newRecordedPrompts = [...recordedPrompts, recordedPrompt];
+  setRecordedPrompts(newRecordedPrompts);
+  const prompts: ToBeRecordedPrompt[] = [
+    {
+      title: recordedPrompt.title,
+      content: recordedPrompt.content,
+      type: "sugguestionItem."
+    }
+  ];
   const requestprompt: CreatePromptsRequest = {prompts};
   await createPrompts(requestprompt);
   };
- 
+
+  const [updatePromptItem, setUpdatePromptItem] = useState<RecordedPrompt>();
+
+  const handleUpdatePromptChange = (newPromptItem:RecordedPrompt) => {
+    setUpdatePromptItem(newPromptItem);
+  };
+
+  const handleDoUpdatePromptChange =async (recordedPrompt: RecordedPrompt) => {
+    const prompts: UpdatePromptRequest = 
+      {
+        uuid: recordedPrompt.uuid,
+        createdDate:recordedPrompt.createdDate,
+        content: recordedPrompt.content,
+      }
+    ;
+    const requestprompt: UpdatePromptRequest = prompts;
+    await updatePrompt(requestprompt);
+
+    // 更新本地状态
+    const updatedRecordedPrompts = recordedPrompts.map((prompt) => {
+      if (prompt.uuid === recordedPrompt.uuid) {
+        // 返回更新后的对象
+        return {
+          ...prompt, // 拷贝原有属性
+          content: recordedPrompt.content, // 使用新的内容
+          // 这里可以根据需要更新其他字段
+        };
+      }
+      return prompt; // 对于不匹配的项，返回原对象
+    });
+
+    // 设置新的状态
+    setRecordedPrompts(updatedRecordedPrompts);
+
+  };
   return (
     <div className="screen:w-screen screen:h-screen overflow-x-hidden">
       <main className="flex-1">
@@ -254,8 +288,9 @@ const App: React.FC = () => {
           className={`fixed -left-64 top-10 z-50 transition-all lg:left-0 lg:z-0 ${isOpenDrawer ? 'left-0' : '-left-64'}`}>
           <Drawer items={items} />
         </div>
-        <SuggestionPanel recordedPrompts={recordedPrompts}/>
+        <SuggestionPanel recordedPrompts={recordedPrompts} onUpdatePromptChange={handleUpdatePromptChange} />
         {appStateContext?.state.isNewSuggestionOpen && <NewSuggestionItemPanel onSave={onSave}/>}
+        {appStateContext?.state.isUpdateSuggestionOpen && updatePromptItem && <UpdateSuggestionItemPanel updatePromptItem={updatePromptItem} onUpdatePromptChange={handleDoUpdatePromptChange} />}
         <div
           id="smallDrawerFiller"
           className={`${isOpenDrawer ? 'visible' : 'invisible'} lg:invisible`}>

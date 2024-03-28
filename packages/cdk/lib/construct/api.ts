@@ -232,6 +232,16 @@ export class Api extends Construct {
     );
     table2.grantReadWriteData(updatePromptFunction);
 
+    const deletePromptFunction = new NodejsFunction(this, 'DeletePrompt', {
+      runtime: Runtime.NODEJS_18_X,
+      entry: './lambda/deletePrompt.ts',
+      timeout: Duration.minutes(15),
+      environment: {
+        TABLE_NAME: table2.tableName,
+      },
+    });
+    table2.grantReadWriteData(deletePromptFunction);
+
     const listPromptsFunction = new NodejsFunction(this, 'ListPrompts', {
       runtime: Runtime.NODEJS_18_X,
       entry: './lambda/listPrompts.ts',
@@ -463,6 +473,13 @@ export class Api extends Construct {
     listpromptResource.addMethod(
       'GET',
       new LambdaIntegration(listPromptsFunction),
+      commonAuthorizerProps
+    );
+    const deletepromptResource = chatsResource.addResource('deleteprompt');
+    // DELETE: /chats/{chatId}
+    deletepromptResource.addMethod(
+      'DELETE',
+      new LambdaIntegration(deleteChatFunction),
       commonAuthorizerProps
     );
 
