@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { BaseProps } from '../@types/common';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 // import { Auth } from 'aws-amplify';
 // import useSWR from 'swr';
 import useDrawer from '../hooks/useDrawer';
@@ -16,6 +16,10 @@ import {
 import ExpandableMenu from './ExpandableMenu';
 import ChatList from './ChatList';
 import Button from './Button';
+import useChat from '../hooks/useChat';
+import useChatApi from '../hooks/useChatApi';
+import { getId } from '@fluentui/react';
+
 
 export type ItemProps = BaseProps & {
   label: string;
@@ -93,6 +97,15 @@ type Props = BaseProps & {
 };
 
 const Drawer: React.FC<Props> = (props) => {
+  const navigate = useNavigate();
+  const chat = useChatApi()
+
+  const onCreate = useCallback(
+    () => {
+      navigate('/chat');
+    },
+    [navigate]
+  );
   // const { getHasUpdate } = useVersion();
 
   // 第一引数は不要だが、ないとリクエストされないため 'user' 文字列を入れる
@@ -130,7 +143,7 @@ const Drawer: React.FC<Props> = (props) => {
           ユースケース 
         </div> */}
         <div className='flex justify-center p-2'>
-          <Button className="w-11/12" onClick={() => console.log(1)}>
+          <Button className="w-11/12" onClick={() => onCreate()}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="fill-current w-5 h-5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>&nbsp;New Chat
