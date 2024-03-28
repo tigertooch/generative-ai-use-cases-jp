@@ -223,6 +223,30 @@ export const updatePrompt = async (
   return res.Attributes as RecordedPrompt;
 };
 
+export const deletePrompt = async (
+  _userId: string,
+  uuid: string,
+  createdDate:string,
+): Promise<void> => {
+  const userId = `prompt#${_userId}`;
+  await dynamoDbDocument.send(
+    new DeleteCommand({
+      TableName: 'Prompt-F104A135-1TV528UPTJP43',
+      Key: {
+        id: userId,
+        createdDate: createdDate,
+      },
+      ConditionExpression: '#uuid = :uuid', 
+      ExpressionAttributeNames: {
+        '#uuid': 'uuid',
+      },
+      ExpressionAttributeValues: {
+        ':uuid': uuid,
+      },
+    })
+  );  
+};
+
 export const listPrompts = async (
   _userId: string
 ): Promise<RecordedPrompt[]> => {
@@ -290,6 +314,7 @@ export const updateFeedback = async (
 
   return res.Attributes as RecordedMessage;
 };
+
 
 export const deleteChat = async (
   _userId: string,

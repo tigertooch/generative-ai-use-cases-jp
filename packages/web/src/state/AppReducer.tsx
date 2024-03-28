@@ -9,6 +9,8 @@ export const appStateReducer = (state: AppState, action: Action): AppState => {
             return { ...state, isSuggestionOpen: !state.isSuggestionOpen };
         case 'TOGGLE_CHAT_NEW_SUGGESTION':
             return { ...state, isNewSuggestionOpen: !state.isNewSuggestionOpen };
+        case 'TOGGLE_CHAT_UPDATE_SUGGESTION':
+            return { ...state, isUpdateSuggestionOpen: !state.isUpdateSuggestionOpen };
         default:
             return state;
       }

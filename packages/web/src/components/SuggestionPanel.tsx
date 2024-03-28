@@ -11,6 +11,7 @@ import {
 } from 'generative-ai-use-cases-jp';
 type Props = BaseProps & {
   recordedPrompts?: RecordedPrompt[];
+  onUpdatePromptChange:(newItem: RecordedPrompt) => void;
 };
 export const SuggestionPanel: React.FC<Props>= (props) => {
   const {opened: isOpenDrawer } = useDrawer();
@@ -30,9 +31,11 @@ export const SuggestionPanel: React.FC<Props>= (props) => {
     setExpandedUuid(uuid);
   };
   // 编辑提示内容的方法
-  const handlePromptEdit = () => {
-    console.log(1)
+  const handlePromptEdit = (recordedPrompt:RecordedPrompt) => {
+    appStateContext?.dispatch({ type: 'TOGGLE_CHAT_UPDATE_SUGGESTION' })
+    props.onUpdatePromptChange(recordedPrompt);
   };
+
   const navigate = useNavigate();
   const handlePromptAddContent = useCallback((recordedPrompt:RecordedPrompt) => {
     navigate('/chat', {
@@ -77,7 +80,7 @@ export const SuggestionPanel: React.FC<Props>= (props) => {
                       <div> 
                           <pre className="whitespace-pre-wrap relative text-left rounded-lg pl-2 ">
                             {recordedPrompt.content}
-                            <button onClick={() => handlePromptEdit()} className={"absolute right-0 "}> 
+                            <button onClick={() => handlePromptEdit(recordedPrompt)} className={"absolute right-0 "}> 
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"  className="tabler-icon tabler-icon-pencil w-5 h-5"> 
                               <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path> 
                               <path d="M13.5 6.5l4 4"></path> 
